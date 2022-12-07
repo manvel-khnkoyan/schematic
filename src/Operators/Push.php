@@ -1,8 +1,8 @@
 <?php
 
-namespace Peegh\Schematic\Operators;
-use Peegh\Schematic\Operator;
-use Peegh\Schematic\Schema;
+namespace Peeghe\Schematic\Operators;
+use Peeghe\Schematic\Operator;
+use Peeghe\Schematic\Schema;
 
 class Push extends Operator {
     public function validate($value) : bool {

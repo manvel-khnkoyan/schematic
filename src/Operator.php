@@ -1,8 +1,8 @@
 <?php
 
-namespace Peegh\Schematic;
+namespace Peeghe\Schematic;
 
-use Peegh\Schematic\Interfaces\Property;
+use Peeghe\Schematic\Interfaces\Property;
 
 abstract class Operator implements Property {
     abstract protected function validate($value): bool;
@@ -11,7 +11,7 @@ abstract class Operator implements Property {
         $this->validate($value);
     }
 
-    public function validateType($originType) : bool {
-        return in_array(get_class($this), $originType::$operators);
+    public function validateReference($type): bool {
+        return in_array(get_class($this), $type::$operators);
     }
 }

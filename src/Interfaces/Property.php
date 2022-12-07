@@ -1,7 +1,11 @@
 <?php
 
-namespace Peegh\Schematic\Interfaces;
+namespace Peeghe\Schematic\Interfaces;
 
 interface Property {
-    public function validateType($originType) : bool;
+    /*
+     * This function created special for validating
+     * parent reference: Each schema property must have 
+     * validateReference function to validate dependenciess */
+    public function validateReference($type) : bool;
 }

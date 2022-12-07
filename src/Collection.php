@@ -1,23 +1,56 @@
 <?php
 
-namespace Peegh\Schematic;
+namespace Peeghe\Schematic;
 
-use Peegh\Schematic\Interfaces\Property;
+use Peeghe\Schematic\Interfaces\Property;
+use Peeghe\Schematic\Operator;
 
 abstract class Collection implements Property, \Iterator {
+    protected $type = null;
     protected $list = [];
     protected $position = 0;
 
-    public function validateType($originType) : bool {
-        return is_a($this, $originType);
+    public function validateReference($type): bool {
+        return is_a($this, $type);
     }
 
     public function __construct($list) {
         $this->position = 0;
-        foreach ($list as $item) {
-            if (!is_a($item, $this->type)) {
+        if (!is_array($list)) {
+            throw new \Exception("Lists should receive only array");
+        }
+
+        $itemType = null;
+        foreach ($list as $key => $item) {
+
+            /*
+             * Check if all the items has the same type */
+            $type = get_parent_class($item) ?? get_class($item);
+            if (!$itemType) $itemType = $type;
+            if ($itemType !== $type) {
                 throw new \Exception(
-                    get_class($this)." has invalid item ".print_r($item, true)
+                    "Lists ". get_class($item) ." should have same type of items"
+                );
+            }
+
+             /*
+             * Check if all the items are implementation of Property */
+             if (!($item instanceof Property)) {
+                throw new \Exception(
+                    "Lists ". get_class($item) ." index [$key] is invalid. " . 
+                    "Each list element must be instance of [Property]"
+                );  
+            }
+
+            /*
+             * When items are operators */
+            if ($item instanceof Operator) {
+                $item->validateReference(get_class($item));
+            }
+
+            if ($this->type !== get_class($item)) {
+                throw new \Exception(
+                    get_class($this)." has invalid type at index: $key"
                 );
             }
             $this->list[] = $item;

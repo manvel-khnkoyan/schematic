@@ -1,8 +1,8 @@
 <?php
 
-namespace Peegh\Schematic;
+namespace Peeghe\Schematic;
 
-use Peegh\Schematic\Interfaces\Property;
+use Peeghe\Schematic\Interfaces\Property;
 
 /*
  * It coukld be eather primitiv eather 
@@ -10,7 +10,6 @@ use Peegh\Schematic\Interfaces\Property;
 abstract class Field implements Property {
     protected $value;
     protected $operators = [];
-
     abstract protected function validate($value): bool;
 
     public function validateType($type) : bool {
@@ -19,7 +18,9 @@ abstract class Field implements Property {
 
     function __construct($value) {
         if (!$this->validate($value)) {
-            throw new \Exception("Invalid value: " . print_r($value, true) . " for ".get_class($this));
+            throw new \Exception(
+                "Oops invalid Field is provided: $value"
+            );
         }
         $this->value = $value;
     }

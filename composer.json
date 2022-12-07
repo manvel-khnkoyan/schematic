@@ -1,8 +1,8 @@
 {
-    "name": "peegh/schematic",
+    "name": "Peeghe/schematic",
     "autoload": {
         "psr-4": {
-            "Peegh\\Schematic\\": "src/",
+            "Peeghe\\Schematic\\": "src/",
             "MyExamples\\": "examples/"
         }
     },

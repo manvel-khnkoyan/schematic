@@ -1,8 +1,8 @@
 <?php
 
-namespace Peegh\Schematic\Operators;
+namespace Peeghe\Schematic\Operators;
 
-use Peegh\Schematic\Operator;
+use Peeghe\Schematic\Operator;
 
 class Increase extends Operator {
     public function validate($value) : bool {

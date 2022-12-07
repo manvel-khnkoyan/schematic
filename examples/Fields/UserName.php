@@ -2,7 +2,7 @@
 
 namespace Example;
 
-use Peegh\Schematic\Field;
+use Peeghe\Schematic\Field;
 
 class UserName extends Field {
     function __construct($value) {

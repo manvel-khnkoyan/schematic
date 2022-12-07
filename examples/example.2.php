@@ -4,9 +4,9 @@ namespace MyExample;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Peegh\Schematic\Field;
-use Peegh\Schematic\Lists\Operators;
-use Peegh\Schematic\Schema;
+use Peeghe\Schematic\Field;
+use Peeghe\Schematic\Lists\Operators;
+use Peeghe\Schematic\Schema;
 
 class UserId extends Field {
     function __construct($value) {
@@ -48,7 +48,7 @@ $userOne = new Person([
 $userOne = new Person([
     'id' => new UserId(1234),
     'name' => new UserName('Jhone'),
-    'type' => new Lists\Operators([
+    'type' => new Territories([
         new Operators\Push(),
         new Operators\Pull(),
     ]),

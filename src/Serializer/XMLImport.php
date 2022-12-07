@@ -1,8 +1,8 @@
 <?php
 
-namespace Peegh\Schematic\Packages;
+namespace Peeghe\Schematic\Packages;
 
-use Peegh\Schematic\Serializer;
+use Peeghe\Schematic\Serializer;
 
 class XMLExport {
     function __construct($filepath){

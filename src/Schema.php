@@ -1,10 +1,10 @@
 <?php
 
-namespace Peegh\Schematic;
+namespace Peeghe\Schematic;
 
-use Peegh\Schematic\Interfaces\Property;
+use Peeghe\Schematic\Interfaces\Property;
 
-abstract class Schema implements Property{
+abstract class Schema implements Property {
 
     private $__properties = [];
     protected $__completed = null;
@@ -13,25 +13,8 @@ abstract class Schema implements Property{
         return $this->__completed;
     }
 
-    public function validateType($originType) : bool {
-        return is_a($this, $originType);
-    }
-
-    public function __get($key) {
-        if (isset($this->__properties[$key])) {
-            return $this->__properties[$key];
-        }
-        return null;
-    }
-
-    public function __set($key, $value) {
-        if (isset($this->__properties[$key])) {
-            $this->__properties[$key] = $value;
-        }
-    }
-
-    public function __isset($key) {
-        return isset($this->__properties[$key]);
+    public function validateReference($type) : bool {
+        return is_a($this, $type);
     }
 
     function __construct($properites) {
@@ -61,13 +44,13 @@ abstract class Schema implements Property{
             // check if implemntees Property
             if (!($item instanceof Property)) {
                 throw new \Exception(
-                    "Schema ".get_class($this)." property [$key] is invalid" . 
+                    "Schema ".get_class($this)." property [$key] is invalid. " . 
                     "Schema property must be List, Field, Schema, Resource or Operator"
                 );  
             }
 
             // Validate Type
-            if (!$item->validateType($schema)) {
+            if (!$item->validateReference($schema)) {
                 throw new \Exception(
                     "Schema ".get_class($this)." $key should be $schema"
                 ); 
@@ -83,9 +66,24 @@ abstract class Schema implements Property{
             }
         }
 
-        echo $properites['id']." : [" . $this->__completed . "]\n";
-
         // If everithing is ok then own Properities
         $this->__properties = $properites;
+    }
+
+    public function __get($key) {
+        if (isset($this->__properties[$key])) {
+            return $this->__properties[$key];
+        }
+        return null;
+    }
+
+    public function __set($key, $value) {
+        if (isset($this->__properties[$key])) {
+            $this->__properties[$key] = $value;
+        }
+    }
+
+    public function __isset($key) {
+        return isset($this->__properties[$key]);
     }
 }

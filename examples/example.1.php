@@ -4,8 +4,8 @@ namespace MyExample;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Peegh\Schematic\Field;
-use Peegh\Schematic\Schema;
+use Peeghe\Schematic\Field;
+use Peeghe\Schematic\Schema;
 
 class UserId extends Field {
     function __construct($value) {
