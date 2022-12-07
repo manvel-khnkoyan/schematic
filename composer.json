@@ -1,0 +1,10 @@
+{
+    "name": "peegh/schematic",
+    "autoload": {
+        "psr-4": {
+            "Peegh\\Schematic\\": "src/",
+            "MyExamples\\": "examples/"
+        }
+    },
+    "require": {}
+}

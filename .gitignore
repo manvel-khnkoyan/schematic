@@ -1,0 +1,9 @@
+.idea
+.env
+.vscode
+.DS_Store
+/node_modules
+/vendor
+/resources/keys/*
+!/resources/keys/*.example
+package-lock.json
