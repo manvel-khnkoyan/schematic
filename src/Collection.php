@@ -10,10 +10,6 @@ abstract class Collection implements Property, \Iterator {
     protected $list = [];
     protected $position = 0;
 
-    public function validateReference($type): bool {
-        return is_a($this, $type);
-    }
-
     public function __construct($list) {
         $this->position = 0;
         if (!is_array($list)) {
@@ -23,38 +19,32 @@ abstract class Collection implements Property, \Iterator {
         $itemType = null;
         foreach ($list as $key => $item) {
 
-            /*
-             * Check if all the items has the same type */
-            $type = get_parent_class($item) ?? get_class($item);
-            if (!$itemType) $itemType = $type;
-            if ($itemType !== $type) {
-                throw new \Exception(
-                    "Lists ". get_class($item) ." should have same type of items"
-                );
-            }
-
              /*
              * Check if all the items are implementation of Property */
              if (!($item instanceof Property)) {
                 throw new \Exception(
-                    "Lists ". get_class($item) ." index [$key] is invalid. " . 
+                    "Lists [N:$key] item has invalid type: " . gettype($item) . ". " .
                     "Each list element must be instance of [Property]"
                 );  
             }
 
             /*
-             * When items are operators */
-            if ($item instanceof Operator) {
-                $item->validateReference(get_class($item));
+             * Validate Reference: */
+            if (!$item->validateReference($this->type)) {
+                throw new \Exception(
+                    "List " . get_class($this) . " index [$key] must be type of " .
+                    $this->type .". " . get_class($item) . " given"
+                ); 
             }
 
-            if ($this->type !== get_class($item)) {
-                throw new \Exception(
-                    get_class($this)." has invalid type at index: $key"
-                );
-            }
+            /*
+             * */
             $this->list[] = $item;
         }
+    }
+
+    public function validateReference($type): bool {
+        return is_a($this, $type);
     }
 
     public function rewind(): void {

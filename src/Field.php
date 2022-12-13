@@ -12,10 +12,6 @@ abstract class Field implements Property {
     protected $operators = [];
     abstract protected function validate($value): bool;
 
-    public function validateType($type) : bool {
-        return is_a($this, $type);
-    }
-
     function __construct($value) {
         if (!$this->validate($value)) {
             throw new \Exception(
@@ -23,6 +19,10 @@ abstract class Field implements Property {
             );
         }
         $this->value = $value;
+    }
+
+    public function validateReference($type): bool {
+        return is_a($this, $type);
     }
 
     public function __toString() {

@@ -4,7 +4,7 @@ namespace Examples\Fields;
 
 use Peeghe\Schematic\Field;
 
-class UserId extends Field {
+class CarId extends Field {
     function __construct($value) {
         parent::__construct($value);
     }

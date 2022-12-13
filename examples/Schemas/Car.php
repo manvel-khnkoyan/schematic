@@ -4,13 +4,13 @@ namespace Examples\Schemas;
 
 use Peeghe\Schematic\Schema;
 
-class Person extends Schema {
+class Car extends Schema {
     function __construct(...$args) {
         parent::__construct(...$args);
     }
 
     protected $__schema = [
-        'id' => 'Examples\Fields\UserId',
-        'name' => 'Examples\Fields\UserName',
+        'id' => 'Examples\Fields\CarId',
+        'name' => 'Examples\Fields\CarName',
     ];
 }

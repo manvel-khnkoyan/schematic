@@ -27,32 +27,26 @@ abstract class Schema implements Property {
 
         // Loop through input input
         foreach ($properites as $key => $item) {
+            // check if property was defined
             if (!isset($this->__schema[$key])) {
                 throw new \Exception(
-                    "Internal ".get_class($this)." scheme $key not found"
+                    "Schema ".get_class($this)." key [$key] are not defined"
                 );
             }
 
-            // Get Schem
-            $schema = $this->__schema[$key];
-            if (!(is_a($item, $schema))) {
-                throw new \Exception(
-                    "Schema ".get_class($item)." should be $schema"
-                );
-            }
-
-            // check if implemntees Property
+            // check if insteance of Property
             if (!($item instanceof Property)) {
                 throw new \Exception(
-                    "Schema ".get_class($this)." property [$key] is invalid. " . 
-                    "Schema property must be List, Field, Schema, Resource or Operator"
+                    "Schema ".get_class($this)." [$key] must be insteance of Property"
                 );  
             }
 
-            // Validate Type
+            // Validate Reffernece
+            $schema = $this->__schema[$key];
             if (!$item->validateReference($schema)) {
                 throw new \Exception(
-                    "Schema ".get_class($this)." $key should be $schema"
+                    "Schema " . get_class($this) . " [$key] must be type of $schema. " .
+                    get_class($item) . " given"
                 ); 
             }
         }

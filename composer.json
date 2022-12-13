@@ -1,10 +1,16 @@
 {
-    "name": "Peeghe/schematic",
+    "name": "peeghe/schematic",
     "autoload": {
         "psr-4": {
             "Peeghe\\Schematic\\": "src/",
-            "MyExamples\\": "examples/"
+            "Examples\\": "examples/"
         }
     },
+    "authors": [
+        {
+            "name": "Manvel Khnkoyan",
+            "email": "manvel.labor@gmail.com"
+        }
+    ],
     "require": {}
 }
