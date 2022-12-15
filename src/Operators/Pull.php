@@ -1,11 +1,20 @@
 <?php
 
 namespace Peeghe\Schematic\Operators;
+
 use Peeghe\Schematic\Operator;
-use Peeghe\Schematic\Schema;
 
 class Pull extends Operator {
+    function __construct(...$arg) {
+        parent::__construct(...$arg);
+    }
+    
     public function validateReference($type): bool {
-        return $value instanceof Schema;
+
+        if ($type !== get_class($this->value)) {
+            return false;
+        }
+
+        return true;
     }
 }

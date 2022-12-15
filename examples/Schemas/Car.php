@@ -12,5 +12,6 @@ class Car extends Schema {
     protected $__schema = [
         'id' => 'Examples\Fields\CarId',
         'name' => 'Examples\Fields\CarName',
+        'price' => 'Examples\Fields\CarPrice',
     ];
 }

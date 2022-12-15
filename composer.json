@@ -2,14 +2,18 @@
     "name": "peeghe/schematic",
     "autoload": {
         "psr-4": {
-            "Peeghe\\Schematic\\": "src/",
+            "Peeghe\\Schematic\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Examples\\": "examples/"
         }
     },
     "authors": [
         {
             "name": "Manvel Khnkoyan",
-            "email": "manvel.labor@gmail.com"
+            "email": "manvel@trebel.io"
         }
     ],
     "require": {}

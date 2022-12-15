@@ -22,7 +22,6 @@ Peeghe\Schematic\Field
 Fields are the smallest point of the Schemes:
 
 
-
 ```php
 namespace MyExample;
 
@@ -112,6 +111,47 @@ class Persons extends Collection {
 schema
 
 ```
+
+## XML Serializer
+
+
+```xml
+<xml>
+    <package action="create">
+        <person>
+            <id>20927</id>
+            <name>Jhone</name>
+            <cars>
+                <car>
+                    <id>24</id>
+                    <name>Toyota</name>
+                </car>
+            </cars>
+        </person>
+    </package>
+</xml>
+```
+
+
+
+```xml
+<xml>
+    <package action="update">
+        <person>
+            <id>20927</id>
+            <cars>
+                <push type="operator">
+                    <car>
+                        <id>25</id>
+                        <name>BMW</name>
+                    </car>
+                </push>
+            </cars>
+        </person>
+    </package>
+</xml>
+```
+
 
 
 ```xml

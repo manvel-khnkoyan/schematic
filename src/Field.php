@@ -2,34 +2,36 @@
 
 namespace Peeghe\Schematic;
 
-use Peeghe\Schematic\Interfaces\Property;
+use Peeghe\Schematic\Property;
 
 /*
- * It coukld be eather primitiv eather 
+ * It coukld be eather primitiv eather
  * non primitiv values */
-abstract class Field implements Property {
-    protected $value;
-    protected $operators = [];
+abstract class Field extends Property
+{
+    protected $value = null;
     abstract protected function validate($value): bool;
 
-    function __construct($value) {
+    function __construct($value)
+    {
+        $this->value = $value;
         if (!$this->validate($value)) {
             throw new \Exception(
-                "Oops invalid Field is provided: $value"
+                "For " .
+                    get_class($this) .
+                    " Field invalid value provided: " .
+                    get_class($value)
             );
         }
-        $this->value = $value;
     }
 
-    public function validateReference($type): bool {
-        return is_a($this, $type);
-    }
-
-    public function __toString() {
+    public function __toString()
+    {
         return $this->value;
     }
 
-    public function value() {
+    public function __invoke()
+    {
         return $this->value;
     }
 }

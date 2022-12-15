@@ -1,0 +1,6 @@
+{
+    "prettier.documentSelectors": [
+        "src/*.php",
+        "examples/*.php"
+    ]
+  }

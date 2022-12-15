@@ -2,10 +2,26 @@
 
 namespace Peeghe\Schematic\Operators;
 use Peeghe\Schematic\Operator;
-use Peeghe\Schematic\Schema;
 
 class Push extends Operator {
-    public function validate($value) : bool {
-        return $value instanceof Schema;
+    function __construct(...$arg) {
+        parent::__construct(...$arg);
+    }
+    
+    public function validateReference($type): bool {
+
+        /*
+         * List should have same type of operator */
+        if ($type !== get_class($this->value)) {
+            return false;
+        }
+
+        /*
+         * Pull operator must be full object */
+        if (!$this->value->isFull()) {
+            return false;
+        }
+
+        return true;
     }
 }
