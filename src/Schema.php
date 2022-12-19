@@ -4,8 +4,9 @@ namespace Peeghe\Schematic;
 
 use Peeghe\Schematic\Property;
 
-abstract class Schema extends Property
+abstract class Schema extends Property implements \Iterator
 {
+    protected $position = 0;
     protected $__properties = [];
     protected $__full = null;
 
@@ -19,7 +20,7 @@ abstract class Schema extends Property
         // Check ID
         if (!isset($properites['id'])) {
             throw new \Exception(
-                "Internal " . get_class($this) . " scheme should have [id] key"
+                "Internal " . get_class($this) . " schema should have [id] key"
             );
         }
 
@@ -81,8 +82,27 @@ abstract class Schema extends Property
         }
     }
 
-    public function __isset($key)
-    {
+    public function __isset($key) {
         return isset($this->__properties[$key]);
+    }
+
+    function rewind() : void {
+        reset($this->__properties);
+    }
+    
+    function current() : mixed {
+        return current($this->__properties);
+    }
+    
+    function key() : mixed {
+        return key($this->__properties);
+    }
+    
+    function next() : void {
+        next($this->__properties);
+    }
+    
+    function valid() : bool {
+        return key($this->__properties) !== null;
     }
 }
