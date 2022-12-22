@@ -10,7 +10,7 @@ class Person extends Schema {
     }
 
     protected $__schema = [
-        'id' => 'Examples\Fields\UserId',
-        'name' => 'Examples\Fields\UserName',
+        'Examples\Fields\User\ID',
+        'Examples\Fields\User\Name',
     ];
 }

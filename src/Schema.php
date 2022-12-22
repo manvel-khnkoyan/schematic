@@ -3,80 +3,66 @@
 namespace Peeghe\Schematic;
 
 use Peeghe\Schematic\Property;
+use Peeghe\Schematic\Field;
+use Peeghe\Schematic\Collection;
 
 abstract class Schema extends Property implements \Iterator
 {
-    protected $position = 0;
+    
     protected $__properties = [];
-    protected $__full = null;
 
-    public function isFull()
-    {
-        return $this->__full;
+    public function isCompleted() {
+        return count($this->__schema) === ($this->__properties);
     }
 
-    function __construct($properites)
-    {
-        // Check ID
-        if (!isset($properites['id'])) {
+    function __construct($properites) {
+
+        foreach ($properites as $item) {
+            // Get Type of Item
+            $type = get_class($item);
+
+            // Get Key
+            $namespaces = explode('\\', get_class($item));
+            $key = end($namespaces);
+
+            // check if property was defined
+            if (!in_array($type, $this->__schema)) {
+                throw new \Exception(
+                    "Schema " . get_class($this) . " [$type] is not defined"
+                );
+            }
+
+            // Check if insteance of Property
+            if (
+                !($item instanceof Field) &&
+                !($item instanceof Collection)
+            ) {
+                throw new \Exception(
+                    "Schema " .
+                        get_class($this) .
+                        " [$type] must be Field or Collection"
+                );
+            }
+
+            // Set Property
+            $this->__properties[$key] = $item;
+        }
+
+        if (!$this->ID) {
             throw new \Exception(
-                "Internal " . get_class($this) . " schema should have [id] key"
+                get_class($this) . " must have [ID] property"
             );
         }
-
-        // Loop through input input
-        foreach ($properites as $key => $item) {
-            // check if property was defined
-            if (!isset($this->__schema[$key])) {
-                throw new \Exception(
-                    "Schema " . get_class($this) . " key [$key] are not defined"
-                );
-            }
-
-            // check if insteance of Property
-            if (!($item instanceof Property)) {
-                throw new \Exception(
-                    "Schema " .
-                        get_class($this) .
-                        " [$key] must be insteance of Property"
-                );
-            }
-
-            // Validate Reffernece
-            $schema = $this->__schema[$key];
-            if (!$item->validateReference($schema)) {
-                throw new \Exception(
-                    "Schema " .
-                        get_class($this) .
-                        " has given invalid type: " .
-                        get_class($item)
-                );
-            }
-        }
-
-        /*
-         * See if schema has all the fields */
-        $this->__full = true;
-        foreach ($this->__schema as $key => $schema) {
-            if (!isset($properites[$key])) {
-                $this->__full = false;
-            }
-        }
-
-        // If everithing is ok then own Properities
-        $this->__properties = $properites;
     }
 
-    public function __get($key)
-    {
+    public function __get($key) {
         if (isset($this->__properties[$key])) {
             return $this->__properties[$key];
         }
         return null;
     }
 
-    public function __set($key, $value)
-    {
+    public function __set($key, $value) {
         if (isset($this->__properties[$key])) {
             $this->__properties[$key] = $value;
         }

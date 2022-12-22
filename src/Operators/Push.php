@@ -9,7 +9,6 @@ class Push extends Operator {
     }
     
     public function validateReference($type): bool {
-
         /*
          * List should have same type of operator */
         if ($type !== get_class($this->value)) {
@@ -17,8 +16,8 @@ class Push extends Operator {
         }
 
         /*
-         * Pull operator must be full object */
-        if (!$this->value->isFull()) {
+         * Pull operator must be completed object */
+        if (!$this->value->isCompleted()) {
             return false;
         }
 

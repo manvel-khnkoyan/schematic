@@ -1,15 +1,15 @@
 <?php
 
-namespace Examples\Fields;
+namespace Examples\Fields\Car;
 
 use Peeghe\Schematic\Field;
 
-class CarPrice extends Field {
+class Name extends Field {
     function __construct($value) {
         parent::__construct($value);
     }
 
     public function validate($value): bool {
-        return is_numeric($value);
+        return is_string($value) && strlen($value) > 0 && strlen($value) < 255;
     }
 }

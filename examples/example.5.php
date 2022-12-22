@@ -9,9 +9,10 @@ use Examples\Fields;
 use Peeghe\Schematic\Operators;
 
 $carTwo = new Schemas\Car([
-    'id' => new Fields\CarId(31),
-    'price' => new Operators\Increase(5000),
+    new Fields\Car\ID(31),
+    new Fields\Car\Price(
+        new Operators\Increase(5000),
+    )
 ]);
-
 
 echo "OK\n";

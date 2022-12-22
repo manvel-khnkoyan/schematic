@@ -4,7 +4,7 @@ namespace Peeghe\Schematic\Tools;
 
 use Peeghe\Schematic\Schema;
 
-class Exporter 
+class Importer 
 {
     function __construct(Schema $schema) {
 

@@ -156,12 +156,28 @@ schema
 
 ```xml
 <xml>
+    <package action="update">
+        <person>
+            <id>20927</id>
+            <carNames>
+                <CarName />
+                <CarName />
+                <CarName />
+            </cars>
+        </person>
+    </package>
+</xml>
+```
+
+
+```xml
+<xml>
     <Schema version="1.0" action="Update">
         <Release>
-            <ID>12301928</ID>
-            <UpdateCount type="Operator">
-                <Increase>1</Increase>
-            </UpdateCount>
+            <ID key="id">12301928</ID>
+            <Price key="">
+                <Increase type="operator">1</Increase>
+            </Price>
             <Resources type="Operator">
                 <Pull>
                     <Resource />
@@ -182,8 +198,8 @@ schema
 
 ```xml
 <xml>
-    <Schema version="1.0">
-        <ReleaseSetting action="Update">
+    <Entity action="Update">
+        <ReleaseSetting>
             <ID>12301928</ID>
             <Territories type="operator">
                 <Pull>
@@ -196,17 +212,17 @@ schema
                 </Push>
             </Territories>
         </ReleaseSetting>
-    </Schema>
+    </Entity>
 </xml>
 ```
 
 ```xml
 <xml>
-    <Schema version="1.0">
+    <Entity version="1.0">
         <Track action="Delete">
             <ID>12301928</ID>
         <Track>
-    </Schema>
+    </Entity>
 </xml>
 ```
 

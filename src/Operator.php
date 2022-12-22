@@ -14,4 +14,11 @@ abstract class Operator extends Property
     {
         $this->value = $value;
     }
+
+    /*
+    * Get Operator Inner Item */
+    public function innerItem()
+    {
+        return $this->value;
+    }
 }

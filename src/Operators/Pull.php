@@ -10,11 +10,9 @@ class Pull extends Operator {
     }
     
     public function validateReference($type): bool {
-
         if ($type !== get_class($this->value)) {
             return false;
         }
-
         return true;
     }
 }

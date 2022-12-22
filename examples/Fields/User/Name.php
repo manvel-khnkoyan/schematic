@@ -1,10 +1,10 @@
 <?php
 
-namespace Examples\Fields;
+namespace Examples\Fields\User;
 
 use Peeghe\Schematic\Field;
 
-class UserName extends Field {
+class Name extends Field {
     function __construct($value) {
         parent::__construct($value);
     }

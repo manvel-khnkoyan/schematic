@@ -17,20 +17,22 @@ abstract class Field extends Property
         $this->value = $value;
         if (!$this->validate($value)) {
             throw new \Exception(
-                "For " .
-                    get_class($this) .
-                    " Field invalid value provided: " .
-                    get_class($value)
+                "Invalid value: [$value] given for " . get_class($this)
             );
         }
     }
 
     public function __toString()
     {
-        return $this->value;
+        if (is_scalar($this->value)) {
+            return $this->value;
+        }
+        return '['.get_class($this->value).']';
     }
 
-    public function __invoke()
+    /*
+    * Get Field Inner Item */
+    public function innerItem()
     {
         return $this->value;
     }

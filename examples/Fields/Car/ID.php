@@ -1,10 +1,10 @@
 <?php
 
-namespace Examples\Fields;
+namespace Examples\Fields\Car;
 
 use Peeghe\Schematic\Field;
 
-class CarId extends Field {
+class ID extends Field {
     function __construct($value) {
         parent::__construct($value);
     }
