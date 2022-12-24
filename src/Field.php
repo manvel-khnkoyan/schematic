@@ -1,8 +1,9 @@
 <?php
 
-namespace Peeghe\Schematic;
+namespace Xnko\Schematic;
 
-use Peeghe\Schematic\Property;
+use Xnko\Schematic\Property;
+use Xnko\Schematic\Operator;
 
 /*
  * It coukld be eather primitiv eather
@@ -15,15 +16,24 @@ abstract class Field extends Property
     function __construct($value)
     {
         $this->value = $value;
-        if (!$this->validate($value)) {
+        if ($this->value instanceof Property) {
+            if (!$this->value->validateType($this)) {
+                throw new \Exception(
+                    "Field [" . get_class($this) . 
+                    "] has invalid value: [" . 
+                    get_class($this->value) . "]"
+                );
+            }
+        } else if (!$this->validate($value)) {
+            $val = is_scalar($this->value) 
+                ? $value : get_class($value);
             throw new \Exception(
-                "Invalid value: [$value] given for " . get_class($this)
+                "Invalid value: [$val] given in " . get_class($this)
             );
         }
     }
 
-    public function __toString()
-    {
+    public function __toString() {
         if (is_scalar($this->value)) {
             return $this->value;
         }
@@ -32,7 +42,7 @@ abstract class Field extends Property
 
     /*
     * Get Field Inner Item */
-    public function innerItem()
+    public function innerItem() 
     {
         return $this->value;
     }

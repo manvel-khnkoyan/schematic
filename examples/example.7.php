@@ -6,11 +6,11 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Examples\Schemas;
 use Examples\Fields;
-use Peeghe\Schematic\Operators;
-use Peeghe\Schematic\Tools\Exporter;
+use Xnko\Schematic\Operators;
+use Xnko\Schematic\Tools\Exporter;
 
 $car = new Schemas\Car([
-    'id' => new Fields\CarId(31),
+    'id' => new Fields\Car\ID(31),
     'price' => new Operators\Increase(5000),
 ]);
 

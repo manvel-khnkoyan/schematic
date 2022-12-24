@@ -2,12 +2,12 @@
 
 namespace Examples\Lists;
 
-use Peeghe\Schematic\Collection;
+use Xnko\Schematic\Collection;
 
 class Persons extends Collection {
     protected $type = 'Examples\Schemas\Person';
     protected $operators = [
-        'Peeghe\Schematic'
+        'Xnko\Schematic'
     ];
 
     function __construct(...$arg) {

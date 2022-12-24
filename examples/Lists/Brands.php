@@ -2,10 +2,13 @@
 
 namespace Examples\Lists;
 
-use Peeghe\Schematic\Collection;
+use Xnko\Schematic\Collection;
 
 class Brands extends Collection {
-    protected $type = 'Examples\Fields\CarName';
+    protected $type = 'Examples\Fields\Car\Name';
+    protected $operators = [
+        'Xnko\Operators\Push'
+    ];
 
     function __construct(...$arg) {
         parent::__construct(...$arg);

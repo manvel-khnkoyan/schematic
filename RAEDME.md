@@ -4,7 +4,7 @@ Schematic data types data exchange and command protocol
 
 ### Schema
 
-Peeghe\Schematic\Schema
+Xnko\Schematic\Schema
 
 A schema is a dictionary-like object that has properties, each property can currently be of the following 4 types:
 
@@ -17,7 +17,7 @@ A schema is a dictionary-like object that has properties, each property can curr
 
 ### Field
 
-Peeghe\Schematic\Field
+Xnko\Schematic\Field
 
 Fields are the smallest point of the Schemes:
 
@@ -25,7 +25,7 @@ Fields are the smallest point of the Schemes:
 ```php
 namespace MyExample;
 
-use Peeghe\Schematic\Field;
+use Xnko\Schematic\Field;
 
 class UserId extends Field {
     function __construct($value) {
@@ -55,7 +55,7 @@ After we have created two types of fields, we can easily create the first schema
 ```php
 namespace MyExample;
 
-use Peeghe\Schematic\Schema;
+use Xnko\Schematic\Schema;
 
 class Person extends Schema {
     function __construct(...$args){
@@ -89,7 +89,7 @@ echo $userOne->id . "\n";
 
 ### List
 
-Peeghe\Schematic\Collection
+Xnko\Schematic\Collection
 
 __Collection__ Why not List? beacouse of list is reserved word in PHP
 
@@ -98,7 +98,7 @@ __Collection__ Why not List? beacouse of list is reserved word in PHP
 ```php
 namespace MyExample;
 
-use Peeghe\Schematic\Collection;
+use Xnko\Schematic\Collection;
 
 class Persons extends Collection {
     protected $type = 'MyExample\Person';

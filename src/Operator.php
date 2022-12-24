@@ -1,8 +1,8 @@
 <?php
 
-namespace Peeghe\Schematic;
+namespace Xnko\Schematic;
 
-use Peeghe\Schematic\Property;
+use Xnko\Schematic\Property;
 
 abstract class Operator extends Property
 {
@@ -13,6 +13,11 @@ abstract class Operator extends Property
     function __construct($value)
     {
         $this->value = $value;
+    }
+
+    // Call parent function
+    public function validateType($type): bool {
+        return isset($type->operators) && in_array(get_class($this), $type->operators);
     }
 
     /*

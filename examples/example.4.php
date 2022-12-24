@@ -7,20 +7,20 @@ require __DIR__ . '/../vendor/autoload.php';
 use Examples\Schemas;
 use Examples\Fields;
 use Examples\Lists;
-use Peeghe\Schematic\Operators;
+use Xnko\Schematic\Operators;
 
 $userOne = new Schemas\Person([
-    'id' => new Fields\UserId(15),
-    'name' => new Fields\UserName('Jhone'),
+    new Fields\User\ID(15),
+    new Fields\User\Name('Jhone'),
 ]);
 
 $userTwo = new Schemas\Person([
-    'id' => new Fields\UserId(16),
-    'name' => new Fields\UserName('Alan'),
+    new Fields\User\ID(16),
+    new Fields\User\Name('Alan'),
 ]);
 
 $userTree = new Schemas\Person([
-    'id' => new Fields\UserId(18),
+    new Fields\User\ID(18),
 ]);
 
 $Persons = new Lists\Persons([
@@ -29,5 +29,11 @@ $Persons = new Lists\Persons([
 ]);
 
 
-echo "OK\n";
+try {
+    $Persons = new Lists\Persons([
+        new Operators\Push($userTree)
+    ]);
+}  catch (\Exception $e) {
+    echo "OK\n";
+}
 

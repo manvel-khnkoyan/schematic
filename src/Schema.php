@@ -1,10 +1,10 @@
 <?php
 
-namespace Peeghe\Schematic;
+namespace Xnko\Schematic;
 
-use Peeghe\Schematic\Property;
-use Peeghe\Schematic\Field;
-use Peeghe\Schematic\Collection;
+use Xnko\Schematic\Property;
+use Xnko\Schematic\Field;
+use Xnko\Schematic\Collection;
 
 abstract class Schema extends Property implements \Iterator
 {
@@ -12,7 +12,7 @@ abstract class Schema extends Property implements \Iterator
     protected $__properties = [];
 
     public function isCompleted() {
-        return count($this->__schema) === ($this->__properties);
+        return count($this->__schema) === count($this->__properties);
     }
 
     function __construct($properites) {

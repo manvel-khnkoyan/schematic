@@ -1,8 +1,8 @@
 <?php
 
-namespace Peeghe\Schematic;
+namespace Xnko\Schematic;
 
-use Peeghe\Schematic\Property;
+use Xnko\Schematic\Property;
 
 abstract class Collection extends Property implements \Iterator
 {
@@ -32,9 +32,9 @@ abstract class Collection extends Property implements \Iterator
 
             /*
              * Validate Reference: */
-            if (!$item->validateReference($this->type)) {
+            if (!$item->validateType($this->type)) {
                 throw new \Exception(
-                    "List " . get_class($this) . " [$key] is invalid: " . get_class($item)
+                    "List [" . get_class($this) . "] has invalid [" . get_class($item) . "] item"
                 );
             }
 

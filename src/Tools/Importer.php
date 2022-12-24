@@ -1,8 +1,8 @@
 <?php
 
-namespace Peeghe\Schematic\Tools;
+namespace Xnko\Schematic\Tools;
 
-use Peeghe\Schematic\Schema;
+use Xnko\Schematic\Schema;
 
 class Importer 
 {

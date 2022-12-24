@@ -2,7 +2,7 @@
 
 namespace Examples\Fields\Car;
 
-use Peeghe\Schematic\Field;
+use Xnko\Schematic\Field;
 
 class ID extends Field {
     function __construct($value) {

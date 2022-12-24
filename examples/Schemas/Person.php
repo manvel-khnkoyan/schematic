@@ -2,7 +2,7 @@
 
 namespace Examples\Schemas;
 
-use Peeghe\Schematic\Schema;
+use Xnko\Schematic\Schema;
 
 class Person extends Schema {
     function __construct(...$args) {

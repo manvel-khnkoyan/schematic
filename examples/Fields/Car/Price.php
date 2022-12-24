@@ -2,9 +2,14 @@
 
 namespace Examples\Fields\Car;
 
-use Peeghe\Schematic\Field;
+use Xnko\Schematic\Field;
 
 class Price extends Field {
+
+    public $operators = [
+        'Xnko\Schematic\Operators\Increase'
+    ];
+
     function __construct($value) {
         parent::__construct($value);
     }

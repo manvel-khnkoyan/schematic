@@ -1,8 +1,8 @@
 {
-    "name": "peeghe/schematic",
+    "name": "xnko/schematic",
     "autoload": {
         "psr-4": {
-            "Peeghe\\Schematic\\": "src/"
+            "Xnko\\Schematic\\": "src/"
         }
     },
     "autoload-dev": {

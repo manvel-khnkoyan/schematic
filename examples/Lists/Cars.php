@@ -2,7 +2,7 @@
 
 namespace Examples\Lists;
 
-use Peeghe\Schematic\Collection;
+use Xnko\Schematic\Collection;
 
 class Cars extends Collection {
     protected $type = 'Examples\Schemas\Car';

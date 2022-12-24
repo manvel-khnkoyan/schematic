@@ -7,29 +7,37 @@ use Examples\Fields;
 use Examples\Lists;
 
 $carOne = new Schemas\Car([
-    'id' => new Fields\CarId(32),
-    'name' => new Fields\CarName('Bmw'),
-    'price' => new Fields\CarPrice(15000),
+    new Fields\Car\ID(32),
+    new Fields\Car\Name('Bmw'),
+    new Fields\Car\Price(15000),
 ]);
 
 $carTwo = new Schemas\Car([
-    'id' => new Fields\CarId(31),
-    'name' => new Fields\CarName('Mercedes-Benz'),
-    'price' => new Fields\CarPrice(54000),
+    new Fields\Car\ID(31),
+    new Fields\Car\Name('Mercedes-Benz'),
+    new Fields\Car\Price(54000),
 ]);
 
-
 $carToyota = new Schemas\Toyota([
-    'id' => new Fields\CarId(31),
-    'name' => new Fields\CarName('Mercedes-Benz'),
-    'price' => new Fields\CarPrice(14000),
+    new Fields\Car\ID(31),
+    new Fields\Car\Name('Mercedes-Benz'),
+    new Fields\Car\Price(14000),
 ]);
 
 $userTwo = new Schemas\Person([
-    'id' => new Fields\UserId(16),
-    'name' => new Fields\UserName('Alan'),
+    new Fields\User\ID(16),
+    new Fields\User\Name('Alan'),
 ]);
 
-$cars = new Lists\Cars([$carOne, $carTwo, $carToyota /*, $userTwo */]);
+$cars = new Lists\Cars([
+    $carOne, $carTwo, $carToyota /*, $userTwo */
+]);
 
-echo "OK\n";
+try {
+    $cars2 = new Lists\Cars(
+        [$carOne, $carTwo, $carToyota, $userTwo
+    ]);
+}  catch (Exception $e) {
+    echo "OK\n";
+}
+

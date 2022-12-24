@@ -1,10 +1,10 @@
 <?php
 
-namespace Peeghe\Schematic\Tools;
+namespace Xnko\Schematic\Tools;
 
 use Exception;
-use Peeghe\Schematic\Property;
-use Peeghe\Schematic\Operator;
+use Xnko\Schematic\Property;
+use Xnko\Schematic\Operator;
 
 class Exporter 
 {
@@ -21,21 +21,21 @@ class Exporter
     }
 
     private  function addToXml($xml, $obj) {
-        if (is_a($obj, 'Peeghe\Schematic\Schema')) {
+        if (is_a($obj, 'Xnko\Schematic\Schema')) {
             return $this->addSchema($xml, $obj);
         }
-        if (is_a($obj, 'Peeghe\Schematic\Collection')) {
+        if (is_a($obj, 'Xnko\Schematic\Collection')) {
             return $this->addList($xml, $obj);
         } 
-        if (is_a($obj, 'Peeghe\Schematic\Operator')) {
+        if (is_a($obj, 'Xnko\Schematic\Operator')) {
             return $this->addOperator($xml, $obj);
         } 
-        if (is_a($obj, 'Peeghe\Schematic\Field')) {
+        if (is_a($obj, 'Xnko\Schematic\Field')) {
             return $this->addField($xml, $obj);
         } 
 
         throw new Exception(
-            "Oops, unserialize type provided: "
+            "Oops, unknown type provided :" . get_class($obj)
         );
     }
 
@@ -67,10 +67,6 @@ class Exporter
 
         $link = $this->createXmlContent();
         foreach ($schema as $key => $value) {
-            if () {
-                
-            }
-
             if (is_scalar($value->getValue())) {
                 $link->addChild($key, $value);
             } else {

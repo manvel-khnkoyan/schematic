@@ -1,6 +1,6 @@
 <?php
 
-namespace Peeghe\Schematic;
+namespace Xnko\Schematic;
 
 class Property
 {
@@ -8,8 +8,8 @@ class Property
     /*
      * This function created special for validating
      * parent reference: Each schema property must have
-     * validateReference function to validate dependenciess */
-    public function validateReference($type): bool
+     * validateType function to validate dependenciess */
+    public function validateType($type): bool
     {
         /* 
          * Otherwise check exact type */

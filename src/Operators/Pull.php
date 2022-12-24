@@ -1,15 +1,19 @@
 <?php
 
-namespace Peeghe\Schematic\Operators;
+namespace Xnko\Schematic\Operators;
 
-use Peeghe\Schematic\Operator;
+use Xnko\Schematic\Operator;
 
 class Pull extends Operator {
     function __construct(...$arg) {
         parent::__construct(...$arg);
     }
     
-    public function validateReference($type): bool {
+    public function validateType($type): bool {
+        // Call parent function
+        if (!parent::validateType($type)) return false;
+
+        // Check if List Type is the same as Operator item
         if ($type !== get_class($this->value)) {
             return false;
         }
