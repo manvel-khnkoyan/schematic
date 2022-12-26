@@ -9,7 +9,7 @@ class Pull extends Operator {
     function __construct(...$arg) {
         parent::__construct(...$arg);
     }
-    
+
     public function validateType($list): void {
         // Call parent function
         parent::validateType($list);
@@ -24,8 +24,8 @@ class Pull extends Operator {
         // Check if List Type is the same as Operator item
         if ($list->type !== get_class($this->value)) {
             throw new \Exception(
-                "Pull operator value should be the same type for [".$list->type."]"
-            ); 
+                "Pull operator value should be the same type for [" . $list->type . "]"
+            );
         }
     }
 }

@@ -8,7 +8,7 @@ class Increase extends Operator {
     function __construct(...$arg) {
         parent::__construct(...$arg);
     }
-    
+
     public function validateType($type): void {
         // Call parent function
         parent::validateType($type);

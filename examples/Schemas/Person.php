@@ -12,5 +12,6 @@ class Person extends Schema {
     protected $__schema = [
         'Examples\Fields\User\ID',
         'Examples\Fields\User\Name',
+        'Examples\Lists\Cars',
     ];
 }

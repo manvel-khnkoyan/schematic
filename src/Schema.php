@@ -6,9 +6,8 @@ use Trebel\Schematic\Property;
 use Trebel\Schematic\Field;
 use Trebel\Schematic\Collection;
 
-abstract class Schema extends Property implements \Iterator
-{
-    
+abstract class Schema extends Property implements \Iterator {
+
     protected $__properties = [];
 
     public function isCompleted() {
@@ -72,23 +71,23 @@ abstract class Schema extends Property implements \Iterator
         return isset($this->__properties[$key]);
     }
 
-    function rewind() : void {
+    function rewind(): void {
         reset($this->__properties);
     }
-    
-    function current() : mixed {
+
+    function current(): mixed {
         return current($this->__properties);
     }
-    
-    function key() : mixed {
+
+    function key(): mixed {
         return key($this->__properties);
     }
-    
-    function next() : void {
+
+    function next(): void {
         next($this->__properties);
     }
-    
-    function valid() : bool {
+
+    function valid(): bool {
         return key($this->__properties) !== null;
     }
 }

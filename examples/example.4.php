@@ -12,6 +12,13 @@ use Trebel\Schematic\Operators;
 $userOne = new Schemas\Person([
     new Fields\User\ID(15),
     new Fields\User\Name('Jhone'),
+    new Lists\Cars([
+        new Schemas\Car([
+            new Fields\Car\ID(31),
+            new Fields\Car\Name('Ford'),
+            new Fields\Car\Price(15000)
+        ])
+    ])
 ]);
 
 $userTwo = new Schemas\Person([

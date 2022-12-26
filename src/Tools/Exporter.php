@@ -4,10 +4,8 @@ namespace Trebel\Schematic\Tools;
 
 use Exception;
 use Trebel\Schematic\Property;
-use Trebel\Schematic\Operator;
 
-class Exporter 
-{
+class Exporter {
     private $schema = null;
     private $path = null;
 
@@ -15,31 +13,7 @@ class Exporter
         $this->schema = $schema;
     }
 
-    private function getClass($obj) {
-        $namespaces = explode('\\', get_class($obj));
-        return end($namespaces);
-    }
-
-    private  function addToXml($xml, $obj) {
-        if (is_a($obj, 'Trebel\Schematic\Schema')) {
-            return $this->addSchema($xml, $obj);
-        }
-        if (is_a($obj, 'Trebel\Schematic\Collection')) {
-            return $this->addList($xml, $obj);
-        } 
-        if (is_a($obj, 'Trebel\Schematic\Operator')) {
-            return $this->addOperator($xml, $obj);
-        } 
-        if (is_a($obj, 'Trebel\Schematic\Field')) {
-            return $this->addField($xml, $obj);
-        } 
-
-        throw new Exception(
-            "Oops, unknown type provided :" . get_class($obj)
-        );
-    }
-
-    private function createXmlContent($attributes = []) {
+    private function createXml($attributes = []) {
         $root = new \SimpleXMLElement(
             '<?xml version="1.0" encoding="UTF-8" ?><Content />'
         );
@@ -49,8 +23,8 @@ class Exporter
         return $root;
     }
 
-    private function saveToFile($xml, $path) {
-        $filePath = $this->path. '/' . $path;
+    private function saveXmlToFile($xml, $path) {
+        $filePath = $this->path . '/' . $path;
         $directory = dirname($filePath);
         if (!file_exists($directory)) {
             mkdir($directory, 0777, true);
@@ -58,51 +32,73 @@ class Exporter
         $xml->asXML($filePath);
     }
 
+    private function getClassName($obj) {
+        $namespaces = explode('\\', get_class($obj));
+        return end($namespaces);
+    }
+
+    private  function insertItem($xml, $obj) {
+        if (is_a($obj, 'Trebel\Schematic\Schema')) {
+            return $this->addSchema($xml, $obj);
+        }
+        if (is_a($obj, 'Trebel\Schematic\Collection')) {
+            return $this->addList($xml, $obj);
+        }
+        if (is_a($obj, 'Trebel\Schematic\Operator')) {
+            return $this->addOperator($xml, $obj);
+        }
+        if (is_a($obj, 'Trebel\Schematic\Field')) {
+            return $this->addField($xml, $obj);
+        }
+
+        throw new Exception(
+            "Oops, unknown type provided :" . get_class($obj)
+        );
+    }
+
     private function addSchema($root, $schema) {
-        $name = $this->getClass($schema);
-        $path = $name . '/' . $schema->id . '.xml';
+        $name = $this->getClassName($schema);
+        $path = $name . '/' . $schema->ID . '.xml';
 
         $child = $root->addChild($name);
         $child->addAttribute('src', $path);
 
-        $link = $this->createXmlContent();
-        foreach ($schema as $key => $value) {
-            if (is_scalar($value->getValue())) {
-                $link->addChild($key, $value);
-            } else {
-                $this->addToXml($link->addChild($key), $value);
-            }
+        $link = $this->createXml();
+        foreach ($schema as $value) {
+            $this->insertItem($link, $value);
         }
 
-        $this->saveToFile($link, $path);
+        $this->saveXmlToFile($link, $path);
     }
 
     private function addList($root, $list) {
-        $name = $this->getClass($list);
+        $name = $this->getClassName($list);
         $xml = $root->addChild($name);
         foreach ($list as $item) {
-            $this->addToXml($xml, $item);
+            $this->insertItem($xml, $item);
         }
     }
 
     private function addField($root, $field) {
-        $name = $this->getClass($field);
+        $name = $this->getClassName($field);
+        $value = $field->innerItem();
 
-        if ($field->getValue() instanceof Property) {
-            $this->addToXml($root, $value);
+        if ($value instanceof Property) {
+            $child = $root->addChild($name);
+            $this->insertItem($child, $value);
         } else {
             $root->addChild($name, (string) $value);
         }
-
-        $root->addChild($name, $field->__toString());
     }
 
     private function addOperator($root, $operator) {
-        $name = $this->getClass($operator);
-        $value  = $operator->getValue();
+        $name = $this->getClassName($operator);
+        $value = $operator->innerItem();
 
         if ($value instanceof Property) {
-            $this->addToXml($root, $value);
+            $child = $root->addChild($name);
+            $child->addAttribute('type', 'operator');
+            $this->insertItem($child, $value);
         } else {
             $root->addChild($name, (string) $value);
         }
@@ -110,9 +106,9 @@ class Exporter
 
     public function export($path, $attributes = []) {
         $this->path = $path;
-        $xml = $this->createXmlContent($attributes);
+        $xml = $this->createXml($attributes);
 
         $this->addSchema($xml, $this->schema);
-        $this->saveToFile($xml, '/index.xml');
+        $this->saveXmlToFile($xml, '/index.xml');
     }
 }

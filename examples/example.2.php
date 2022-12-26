@@ -16,6 +16,8 @@ $userTwo = new Schemas\Person([
     new Fields\User\Name('Alan'),
 ]);
 
-$persons = new Lists\Persons([$userOne, $userTwo]);
+$persons = new Lists\Persons([
+    $userOne, $userTwo
+]);
 
 echo "OK\n";

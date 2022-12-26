@@ -1,6 +1,6 @@
-# Catalog Feed Protocol
+## Schematic Protocol
 
-Schematic data types data exchange and command protocol
+Purpose of this library is to create schema transfer protocol with XML export and import abilities.
 
 ### Schema
 
@@ -19,11 +19,11 @@ A schema is a dictionary-like object that has properties, each property can curr
 
 Trebel\Schematic\Field
 
-Fields are the smallest point of the Schemes:
+Fields are the smallest point of the Schemes. Lets degine UserId and UserName fields:
 
 
 ```php
-namespace MyExample;
+namespace Example;
 
 use Trebel\Schematic\Field;
 
@@ -48,12 +48,11 @@ class UserName extends Field {
 }
 ```
 
-
-After we have created two types of fields, we can easily create the first schema.
+After we have created two types of fields, we can define the first schema with thses two fields:
 
 
 ```php
-namespace MyExample;
+namespace Example;
 
 use Trebel\Schematic\Schema;
 
@@ -63,28 +62,25 @@ class Person extends Schema {
     }
 
     protected $__schema = [
-        'id' => 'MyExample\UserId',
-        'name' => 'MyExample\UserName',
+        'Example\UserId',
+        'Example\UserName',
     ];
 }
 ```
-
 
 Then we can create our first Schema object:
 
 ```php
 
-$userOne = new MyExample\Person([
-    'id' => new MyExample\UserId(1234),
-    'name' => new MyExample\UserName('Jhone'),
+$personOne = new Example\Person([
+    new Example\UserId(1234),
+    new Example\UserName('Jhone'),
 ])
 
-// Then You cane get 
 
-echo $userOne->id . "\n";
-
-// Or To get absolute value 
-
+echo $personOne->id . "\n"; // Ourput: "1234"
+// Or to get absoulte value
+echo $personOne->id->innerItem() . "\n"; // Ourput: 1234
 ```
 
 ### List
@@ -93,24 +89,37 @@ Trebel\Schematic\Collection
 
 __Collection__ Why not List? beacouse of list is reserved word in PHP
 
-
+Lists are schema lists like schema, but only difference is Schema can handle diffenerent types, but Lists can handle only one type:
 
 ```php
-namespace MyExample;
+namespace Example;
 
 use Trebel\Schematic\Collection;
 
 class Persons extends Collection {
-    protected $type = 'MyExample\Person';
+    // Discribing Lists item type
+    protected $type = 'Example\Person';
 
     function __construct(...$arg) {
         parent::__construct(...$arg);
     }
 }
 
-schema
+// To use Lists
+
+$persons = new Examples\Persons([
+    $personOne,
+    $personTwo,
+])
 
 ```
+
+
+### Operators
+
+Trebel\Schematic\Collection
+
+__Collection__ Why not List? beacouse of list is reserved word in PHP
 
 ## XML Serializer
 

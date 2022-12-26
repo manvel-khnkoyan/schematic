@@ -9,11 +9,11 @@ class Push extends Operator {
     function __construct(...$arg) {
         parent::__construct(...$arg);
     }
-    
+
     public function validateType($list): void {
         // Call parent function
         parent::validateType($list);
-        
+
         // Check if $list actually is list
         if (!($list instanceof Collection)) {
             throw new \Exception(
@@ -24,13 +24,13 @@ class Push extends Operator {
         // Check if List Type is the same as Operator item
         if ($list->type !== get_class($this->value)) {
             throw new \Exception(
-                "Push operator value should be the same type as [".$list->type."]"
-            ); 
+                "Push operator value should be the same type as [" . $list->type . "]"
+            );
         }
 
         // Pull operator must be completed object
         if (!$this->value->isCompleted()) {
-            throw new \Exception("Push operator should be completed item, for [".$list->type."]"); 
+            throw new \Exception("Push operator should be completed item, for [" . $list->type . "]");
         }
     }
 }
