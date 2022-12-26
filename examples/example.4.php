@@ -7,7 +7,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use Examples\Schemas;
 use Examples\Fields;
 use Examples\Lists;
-use Xnko\Schematic\Operators;
+use Trebel\Schematic\Operators;
 
 $userOne = new Schemas\Person([
     new Fields\User\ID(15),

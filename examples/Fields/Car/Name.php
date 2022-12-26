@@ -2,7 +2,7 @@
 
 namespace Examples\Fields\Car;
 
-use Xnko\Schematic\Field;
+use Trebel\Schematic\Field;
 
 class Name extends Field {
     function __construct($value) {

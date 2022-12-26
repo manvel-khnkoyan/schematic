@@ -6,12 +6,12 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Examples\Schemas;
 use Examples\Fields;
-use Xnko\Schematic\Operators;
-use Xnko\Schematic\Tools\Exporter;
+use Trebel\Schematic\Operators;
+use Trebel\Schematic\Tools\Exporter;
 
 $car = new Schemas\Car([
-    'id' => new Fields\Car\ID(31),
-    'price' => new Operators\Increase(5000),
+    new Fields\Car\ID(31),
+    new Operators\Increase(5000),
 ]);
 
 $exporter = new Exporter($car);

@@ -2,7 +2,7 @@
 
 namespace Examples\Schemas;
 
-use Xnko\Schematic\Schema;
+use Trebel\Schematic\Schema;
 
 class Car extends Schema {
     function __construct(...$args) {

@@ -1,8 +1,8 @@
 {
-    "name": "xnko/schematic",
+    "name": "trebel/schematic",
     "autoload": {
         "psr-4": {
-            "Xnko\\Schematic\\": "src/"
+            "Trebel\\Schematic\\": "src/"
         }
     },
     "autoload-dev": {

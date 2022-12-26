@@ -6,7 +6,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Examples\Schemas;
 use Examples\Fields;
-use Xnko\Schematic\Operators;
+use Trebel\Schematic\Operators;
 
 $carTwo = new Schemas\Car([
     new Fields\Car\ID(31),

@@ -2,12 +2,12 @@
 
 namespace Examples\Fields\Car;
 
-use Xnko\Schematic\Field;
+use Trebel\Schematic\Field;
 
 class Price extends Field {
 
     public $operators = [
-        'Xnko\Schematic\Operators\Increase'
+        'Trebel\Schematic\Operators\Increase'
     ];
 
     function __construct($value) {

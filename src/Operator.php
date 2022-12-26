@@ -1,8 +1,8 @@
 <?php
 
-namespace Xnko\Schematic;
+namespace Trebel\Schematic;
 
-use Xnko\Schematic\Property;
+use Trebel\Schematic\Property;
 
 abstract class Operator extends Property
 {
@@ -16,8 +16,12 @@ abstract class Operator extends Property
     }
 
     // Call parent function
-    public function validateType($type): bool {
-        return isset($type->operators) && in_array(get_class($this), $type->operators);
+    public function validateType($item): void {
+        if (!isset($item->operators) || !in_array(get_class($this), $item->operators)) {
+            throw new  \Exception(
+                "[".get_class($item)."] doesn't have [".get_class($this)."] operator"
+            );
+        }
     }
 
     /*

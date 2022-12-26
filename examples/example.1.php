@@ -10,7 +10,7 @@ $user = new Schemas\Person([
     new Fields\User\Name('Jhone'),
 ]);
 
-echo $user->ID ."\n";
-echo $user->Name ."\n";
+// echo $user->ID ."\n";
+// echo $user->Name ."\n";
 
 echo "OK\n";

@@ -2,12 +2,13 @@
 
 namespace Examples\Lists;
 
-use Xnko\Schematic\Collection;
+use Trebel\Schematic\Collection;
 
 class Persons extends Collection {
-    protected $type = 'Examples\Schemas\Person';
-    protected $operators = [
-        'Xnko\Schematic'
+    public $type = 'Examples\Schemas\Person';
+    public $operators = [
+        'Trebel\Schematic\Operators\Push',
+        'Trebel\Schematic\Operators\Pull',
     ];
 
     function __construct(...$arg) {

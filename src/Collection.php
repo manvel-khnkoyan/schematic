@@ -1,45 +1,37 @@
 <?php
 
-namespace Xnko\Schematic;
+namespace Trebel\Schematic;
 
-use Xnko\Schematic\Property;
+use Trebel\Schematic\Property;
+use Trebel\Schematic\Operator;
 
 abstract class Collection extends Property implements \Iterator
 {
-    protected $type = null;
+    public $type = null;
+    public $operators = [];
+
     protected $list = [];
     protected $position = 0;
 
-    public function __construct($list)
-    {
-        
+    public function __construct($list) {
         $this->position = 0;
         if (!is_array($list)) {
-            throw new \Exception("Lists should receive only array");
+            throw new \Exception("Lists should only receive an array");
         }
 
         foreach ($list as $key => $item) {
-            /*
-             * Check if all the items are implementation of Property */
+            // validate item
             if (!($item instanceof Property)) {
                 throw new \Exception(
-                    "Lists [N:$key] item has invalid type: " .
-                        gettype($item) .
-                        ". " .
-                        "Each list element must be instance of [Property]"
+                    "Lists [$key] item has invalid item: [" . gettype($item) . "]"
                 );
             }
 
-            /*
-             * Validate Reference: */
-            if (!$item->validateType($this->type)) {
-                throw new \Exception(
-                    "List [" . get_class($this) . "] has invalid [" . get_class($item) . "] item"
-                );
-            }
+            // Validate type
+            $item->validateType(
+                $item instanceof Operator ? $this : $this->type
+            );    
 
-            /*
-             * */
             $this->list[] = $item;
         }
     }

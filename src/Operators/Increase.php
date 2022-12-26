@@ -1,19 +1,21 @@
 <?php
 
-namespace Xnko\Schematic\Operators;
+namespace Trebel\Schematic\Operators;
 
-use Xnko\Schematic\Operator;
+use Trebel\Schematic\Operator;
 
 class Increase extends Operator {
     function __construct(...$arg) {
         parent::__construct(...$arg);
     }
     
-    public function validateType($type): bool {
+    public function validateType($type): void {
         // Call parent function
-        if (!parent::validateType($type)) return false;
+        parent::validateType($type);
 
         // Validate 
-        return is_numeric($this->value);
+        if (!is_numeric($this->value)) {
+            throw new \Exception("Increase operator value should be numeric for $type");
+        }
     }
 }

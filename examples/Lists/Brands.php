@@ -2,12 +2,12 @@
 
 namespace Examples\Lists;
 
-use Xnko\Schematic\Collection;
+use Trebel\Schematic\Collection;
 
 class Brands extends Collection {
-    protected $type = 'Examples\Fields\Car\Name';
-    protected $operators = [
-        'Xnko\Operators\Push'
+    public $type = 'Examples\Fields\Car\Name';
+    public $operators = [
+        'Trebel\Operators\Push'
     ];
 
     function __construct(...$arg) {

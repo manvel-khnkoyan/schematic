@@ -1,27 +1,36 @@
 <?php
 
-namespace Xnko\Schematic\Operators;
-use Xnko\Schematic\Operator;
+namespace Trebel\Schematic\Operators;
+
+use Trebel\Schematic\Operator;
+use Trebel\Schematic\Collection;
 
 class Push extends Operator {
     function __construct(...$arg) {
         parent::__construct(...$arg);
     }
     
-    public function validateType($type): bool {
+    public function validateType($list): void {
         // Call parent function
-        if (!parent::validateType($type)) return false;
+        parent::validateType($list);
         
+        // Check if $list actually is list
+        if (!($list instanceof Collection)) {
+            throw new \Exception(
+                "Pull should be only inside List, but its under: " . get_class($list)
+            );
+        }
+
         // Check if List Type is the same as Operator item
-        if ($type !== get_class($this->value)) {
-            return false;
+        if ($list->type !== get_class($this->value)) {
+            throw new \Exception(
+                "Push operator value should be the same type as [".$list->type."]"
+            ); 
         }
 
         // Pull operator must be completed object
         if (!$this->value->isCompleted()) {
-            return false;
+            throw new \Exception("Push operator should be completed item, for [".$list->type."]"); 
         }
-
-        return true;
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Xnko\Schematic\Tools;
+namespace Trebel\Schematic\Tools;
 
 use Exception;
-use Xnko\Schematic\Property;
-use Xnko\Schematic\Operator;
+use Trebel\Schematic\Property;
+use Trebel\Schematic\Operator;
 
 class Exporter 
 {
@@ -21,16 +21,16 @@ class Exporter
     }
 
     private  function addToXml($xml, $obj) {
-        if (is_a($obj, 'Xnko\Schematic\Schema')) {
+        if (is_a($obj, 'Trebel\Schematic\Schema')) {
             return $this->addSchema($xml, $obj);
         }
-        if (is_a($obj, 'Xnko\Schematic\Collection')) {
+        if (is_a($obj, 'Trebel\Schematic\Collection')) {
             return $this->addList($xml, $obj);
         } 
-        if (is_a($obj, 'Xnko\Schematic\Operator')) {
+        if (is_a($obj, 'Trebel\Schematic\Operator')) {
             return $this->addOperator($xml, $obj);
         } 
-        if (is_a($obj, 'Xnko\Schematic\Field')) {
+        if (is_a($obj, 'Trebel\Schematic\Field')) {
             return $this->addField($xml, $obj);
         } 
 

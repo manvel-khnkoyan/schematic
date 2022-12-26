@@ -1,10 +1,10 @@
 <?php
 
-namespace Xnko\Schematic;
+namespace Trebel\Schematic;
 
-use Xnko\Schematic\Property;
-use Xnko\Schematic\Field;
-use Xnko\Schematic\Collection;
+use Trebel\Schematic\Property;
+use Trebel\Schematic\Field;
+use Trebel\Schematic\Collection;
 
 abstract class Schema extends Property implements \Iterator
 {

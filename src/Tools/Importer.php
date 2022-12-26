@@ -1,8 +1,8 @@
 <?php
 
-namespace Xnko\Schematic\Tools;
+namespace Trebel\Schematic\Tools;
 
-use Xnko\Schematic\Schema;
+use Trebel\Schematic\Schema;
 
 class Importer 
 {
