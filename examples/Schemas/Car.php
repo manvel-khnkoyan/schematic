@@ -9,7 +9,7 @@ class Car extends Schema {
         parent::__construct(...$args);
     }
 
-    protected $__schema = [
+    public $__schema = [
         'Examples\Fields\Car\ID',
         'Examples\Fields\Car\Name',
         'Examples\Fields\Car\Price',

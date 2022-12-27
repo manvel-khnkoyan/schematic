@@ -64,8 +64,10 @@ class Exporter {
         $child->addAttribute('src', $path);
 
         $link = $this->createXml();
+        $linkChild = $link->addChild($name);
+
         foreach ($schema as $value) {
-            $this->insertItem($link, $value);
+            $this->insertItem($linkChild, $value);
         }
 
         $this->saveXmlToFile($link, $path);

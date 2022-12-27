@@ -8,6 +8,7 @@ use Trebel\Schematic\Collection;
 
 abstract class Schema extends Property implements \Iterator {
 
+    public $__schema = [];
     protected $__properties = [];
 
     public function isCompleted() {

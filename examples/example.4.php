@@ -1,7 +1,5 @@
 <?php
 
-namespace MyExample;
-
 require __DIR__ . '/../vendor/autoload.php';
 
 use Examples\Schemas;

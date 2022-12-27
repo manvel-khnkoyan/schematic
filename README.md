@@ -114,12 +114,9 @@ $persons = new Examples\Persons([
 
 ```
 
-
 ### Operators
 
-Trebel\Schematic\Collection
-
-__Collection__ Why not List? beacouse of list is reserved word in PHP
+Operators are special for mutation of any field
 
 ## XML Serializer
 
@@ -181,7 +178,7 @@ __Collection__ Why not List? beacouse of list is reserved word in PHP
 
 ```xml
 <xml>
-    <Schema version="1.0" action="Update">
+    <Content version="1.0" action="Update">
         <Release>
             <ID key="id">12301928</ID>
             <Price key="">
@@ -201,7 +198,7 @@ __Collection__ Why not List? beacouse of list is reserved word in PHP
                 </Resource>
             </Images>
         </Release>
-    </Schema>
+    </Content>
 </xml>
 ```
 
