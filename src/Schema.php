@@ -1,108 +1,133 @@
 <?php
 
-namespace Peeghe\Schematic;
+namespace Trebel\Schematic;
 
-use Peeghe\Schematic\Property;
+use Trebel\Schematic\Property;
+use Trebel\Schematic\Field;
+use Trebel\Schematic\Collection;
 
-abstract class Schema extends Property implements \Iterator
-{
-    protected $position = 0;
+/**
+ * Schema
+ */
+abstract class Schema extends Property implements \Iterator {
+
+    public static $schema = [];
     protected $__properties = [];
-    protected $__full = null;
 
-    public function isFull()
-    {
-        return $this->__full;
+    /**
+     * @return [type]
+     */
+    public function isCompleted() {
+        return count($this::$schema) === count($this->__properties);
     }
 
-    function __construct($properites)
-    {
-        // Check ID
-        if (!isset($properites['id'])) {
+    /**
+     * @param mixed $properites
+     */
+    function __construct($properites) {
+        foreach ($properites as $item) {
+            // Get Type of Item
+            $type = get_class($item);
+
+            // Get Key
+            $namespaces = explode('\\', get_class($item));
+            $key = end($namespaces);
+
+            // check if property was defined
+            if (!in_array($type, $this::$schema)) {
+                throw new \Exception(
+                    "Schema " . get_class($this) . " [$type] is not defined"
+                );
+            }
+
+            // Check if insteance of Property
+            if (
+                !($item instanceof Field) &&
+                !($item instanceof Collection)
+            ) {
+                throw new \Exception(
+                    "Schema " .
+                        get_class($this) .
+                        " [$type] must be Field or Collection"
+                );
+            }
+
+            // Set Property
+            $this->__properties[$key] = $item;
+        }
+
+        if (!$this->ID) {
             throw new \Exception(
-                "Internal " . get_class($this) . " schema should have [id] key"
+                get_class($this) . " must have [ID] property"
             );
         }
-
-        // Loop through input input
-        foreach ($properites as $key => $item) {
-            // check if property was defined
-            if (!isset($this->__schema[$key])) {
-                throw new \Exception(
-                    "Schema " . get_class($this) . " key [$key] are not defined"
-                );
-            }
-
-            // check if insteance of Property
-            if (!($item instanceof Property)) {
-                throw new \Exception(
-                    "Schema " .
-                        get_class($this) .
-                        " [$key] must be insteance of Property"
-                );
-            }
-
-            // Validate Reffernece
-            $schema = $this->__schema[$key];
-            if (!$item->validateReference($schema)) {
-                throw new \Exception(
-                    "Schema " .
-                        get_class($this) .
-                        " has given invalid type: " .
-                        get_class($item)
-                );
-            }
-        }
-
-        /*
-         * See if schema has all the fields */
-        $this->__full = true;
-        foreach ($this->__schema as $key => $schema) {
-            if (!isset($properites[$key])) {
-                $this->__full = false;
-            }
-        }
-
-        // If everithing is ok then own Properities
-        $this->__properties = $properites;
     }
 
-    public function __get($key)
-    {
+    /**
+     * @param mixed $key
+     * 
+     * @return [type]
+     */
+    public function __get($key) {
         if (isset($this->__properties[$key])) {
             return $this->__properties[$key];
         }
         return null;
     }
 
-    public function __set($key, $value)
-    {
+    /**
+     * @param mixed $key
+     * @param mixed $value
+     * 
+     * @return [type]
+     */
+    public function __set($key, $value) {
         if (isset($this->__properties[$key])) {
             $this->__properties[$key] = $value;
         }
     }
 
+    /**
+     * @param mixed $key
+     * 
+     * @return [type]
+     */
     public function __isset($key) {
         return isset($this->__properties[$key]);
     }
 
-    function rewind() : void {
+    /**
+     * @return void
+     */
+    function rewind(): void {
         reset($this->__properties);
     }
-    
-    function current() : mixed {
+
+    /**
+     * @return mixed
+     */
+    function current(): mixed {
         return current($this->__properties);
     }
-    
-    function key() : mixed {
+
+    /**
+     * @return mixed
+     */
+    function key(): mixed {
         return key($this->__properties);
     }
-    
-    function next() : void {
+
+    /**
+     * @return void
+     */
+    function next(): void {
         next($this->__properties);
     }
-    
-    function valid() : bool {
+
+    /**
+     * @return bool
+     */
+    function valid(): bool {
         return key($this->__properties) !== null;
     }
 }

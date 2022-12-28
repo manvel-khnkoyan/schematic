@@ -7,15 +7,17 @@ use Examples\Fields;
 use Examples\Lists;
 
 $userOne = new Schemas\Person([
-    'id' => new Fields\UserId(15),
-    'name' => new Fields\UserName('Jhone'),
+    new Fields\User\ID(123),
+    new Fields\User\Name('Jhone'),
 ]);
 
 $userTwo = new Schemas\Person([
-    'id' => new Fields\UserId(16),
-    'name' => new Fields\UserName('Alan'),
+    new Fields\User\ID(16),
+    new Fields\User\Name('Alan'),
 ]);
 
-$persons = new Lists\Persons([$userOne, $userTwo]);
+$persons = new Lists\Persons([
+    $userOne, $userTwo
+]);
 
 echo "OK\n";

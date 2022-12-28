@@ -1,14 +1,32 @@
 <?php
 
-namespace Peeghe\Schematic\Operators;
-use Peeghe\Schematic\Operator;
+namespace Trebel\Schematic\Operators;
 
+use Trebel\Schematic\Operator;
+
+/**
+ * Increase operator,
+ */
 class Increase extends Operator {
+    /**
+     * @param mixed ...$arg
+     */
     function __construct(...$arg) {
         parent::__construct(...$arg);
     }
-    
-    public function validateReference($type): bool {
-        return is_numeric($this->value);
+
+    /**
+     * @param mixed $type
+     * 
+     * @return void
+     */
+    public function validateType($type): void {
+        // Call parent function
+        parent::validateType($type);
+
+        // Validate 
+        if (!is_numeric($this->value)) {
+            throw new \Exception("Increase operator value should be numeric for $type");
+        }
     }
 }

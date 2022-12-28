@@ -1,71 +1,79 @@
 <?php
 
-namespace Peeghe\Schematic;
+namespace Trebel\Schematic;
 
-use Peeghe\Schematic\Property;
+use Trebel\Schematic\Property;
+use Trebel\Schematic\Operator;
 
-abstract class Collection extends Property implements \Iterator
-{
-    protected $type = null;
+/**
+ * Lists
+ */
+abstract class Collection extends Property implements \Iterator {
+    public static $type = null;
+    static public $operators = [];
+
     protected $list = [];
     protected $position = 0;
 
-    public function __construct($list)
-    {
-        
+    /**
+     * @param mixed $list
+     */
+    public function __construct($list) {
         $this->position = 0;
         if (!is_array($list)) {
-            throw new \Exception("Lists should receive only array");
+            throw new \Exception("Lists should only receive an array");
         }
 
         foreach ($list as $key => $item) {
-            /*
-             * Check if all the items are implementation of Property */
+            // validate item
             if (!($item instanceof Property)) {
+                $itype = gettype($item);
                 throw new \Exception(
-                    "Lists [N:$key] item has invalid type: " .
-                        gettype($item) .
-                        ". " .
-                        "Each list element must be instance of [Property]"
+                    "Lists [$key] item has invalid item: [$itype]"
                 );
             }
 
-            /*
-             * Validate Reference: */
-            if (!$item->validateReference($this->type)) {
-                throw new \Exception(
-                    "List " . get_class($this) . " [$key] is invalid: " . get_class($item)
-                );
-            }
+            // Validate type
+            $item->validateType(
+                $item instanceof Operator ? $this : $this::$type
+            );
 
-            /*
-             * */
             $this->list[] = $item;
         }
     }
 
-    public function rewind(): void
-    {
+    /**
+     * @return void
+     */
+    public function rewind(): void {
         $this->position = 0;
     }
 
-    public function current(): mixed
-    {
+    /**
+     * @return mixed
+     */
+    public function current(): mixed {
         return $this->list[$this->position];
     }
 
-    public function key(): mixed
-    {
+    /**
+     * @return mixed
+     */
+    public function key(): mixed {
         return $this->position;
     }
 
-    public function next(): void
-    {
+    /**
+     * @return void
+     */
+    public function next(): void {
         ++$this->position;
     }
 
-    public function valid(): bool
-    {
+    /**
+     * @return bool
+     */
+    public function valid(): bool {
         return isset($this->list[$this->position]);
     }
 }

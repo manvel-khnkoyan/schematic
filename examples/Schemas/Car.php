@@ -2,16 +2,22 @@
 
 namespace Examples\Schemas;
 
-use Peeghe\Schematic\Schema;
+use Trebel\Schematic\Schema;
 
+/**
+ * [Description Car]
+ */
 class Car extends Schema {
+    /**
+     * @param mixed ...$args
+     */
     function __construct(...$args) {
         parent::__construct(...$args);
     }
 
-    protected $__schema = [
-        'id' => 'Examples\Fields\CarId',
-        'name' => 'Examples\Fields\CarName',
-        'price' => 'Examples\Fields\CarPrice',
+    public static $schema = [
+        'Examples\Fields\Car\ID',
+        'Examples\Fields\Car\Name',
+        'Examples\Fields\Car\Price',
     ];
 }

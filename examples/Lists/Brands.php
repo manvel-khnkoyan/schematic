@@ -5,13 +5,12 @@ namespace Examples\Lists;
 use Trebel\Schematic\Collection;
 
 /**
- * [Description Persons]
+ * [Description Brands]
  */
-class Persons extends Collection {
-    public static $type = 'Examples\Schemas\Person';
+class Brands extends Collection {
+    public static $type = 'Examples\Fields\Car\Name';
     public static $operators = [
-        'Trebel\Schematic\Operators\Push',
-        'Trebel\Schematic\Operators\Pull',
+        'Trebel\Operators\Push'
     ];
 
     /**

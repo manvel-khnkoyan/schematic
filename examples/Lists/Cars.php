@@ -2,11 +2,21 @@
 
 namespace Examples\Lists;
 
-use Peeghe\Schematic\Collection;
+use Trebel\Schematic\Collection;
 
+/**
+ * [Description Cars]
+ */
 class Cars extends Collection {
-    protected $type = 'Examples\Schemas\Car';
+    public static $type = 'Examples\Schemas\Car';
+    public static $operators = [
+        'Trebel\Schematic\Operators\Push',
+        'Trebel\Schematic\Operators\Pull',
+    ];
 
+    /**
+     * @param mixed ...$arg
+     */
     function __construct(...$arg) {
         parent::__construct(...$arg);
     }

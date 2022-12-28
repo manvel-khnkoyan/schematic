@@ -1,27 +1,48 @@
 <?php
 
-namespace Peeghe\Schematic\Operators;
-use Peeghe\Schematic\Operator;
+namespace Trebel\Schematic\Operators;
 
+use Trebel\Schematic\Operator;
+use Trebel\Schematic\Collection;
+
+/**
+ * List pull operator
+ * Special to add items to list
+ */
 class Push extends Operator {
+    /**
+     * @param mixed ...$arg
+     */
     function __construct(...$arg) {
         parent::__construct(...$arg);
     }
-    
-    public function validateReference($type): bool {
 
-        /*
-         * List should have same type of operator */
-        if ($type !== get_class($this->value)) {
-            return false;
+    /**
+     * @param mixed $list
+     * 
+     * @return void
+     */
+    public function validateType($list): void {
+        // Call parent function
+        parent::validateType($list);
+
+        // Check if $list actually is list
+        if (!($list instanceof Collection)) {
+            throw new \Exception(
+                "Pull should be only inside List, but its under: " . get_class($list)
+            );
         }
 
-        /*
-         * Pull operator must be full object */
-        if (!$this->value->isFull()) {
-            return false;
+        // Check if List Type is the same as Operator item
+        if ($list::$type !== get_class($this->value)) {
+            throw new \Exception(
+                "Push operator value should be the same type as [" . $list::$type . "]"
+            );
         }
 
-        return true;
+        // Pull operator must be completed object
+        if (!$this->value->isCompleted()) {
+            throw new \Exception("Push operator should be completed item, for [" . $list::$type . "]");
+        }
     }
 }

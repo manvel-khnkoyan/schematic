@@ -1,17 +1,40 @@
 <?php
 
-namespace Peeghe\Schematic;
+namespace Trebel\Schematic;
 
-use Peeghe\Schematic\Property;
+use Trebel\Schematic\Property;
 
-abstract class Operator extends Property
-{
+/**
+ * [Description Operator]
+ */
+abstract class Operator extends Property {
     protected $value = null;
 
-    /*
-     * Constructor */
-    function __construct($value)
-    {
+    /**
+     * @param mixed $value
+     */
+    function __construct($value) {
         $this->value = $value;
+    }
+
+    /**
+     * @param mixed $item
+     * 
+     * @return void
+     */
+    public function validateType($item): void {
+        if (!isset($item::$operators) || !in_array(get_class($this), $item::$operators) ) {
+            throw new  \Exception(
+                "[" . get_class($item) . "] doesn't have [" . get_class($this) . "] operator"
+            );
+        }
+    }
+
+    /*
+     * Get Operator Inner Item 
+     * @return [type]
+     */
+    public function innerItem() {
+        return $this->value;
     }
 }

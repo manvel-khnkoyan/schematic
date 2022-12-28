@@ -1,6 +1,7 @@
 {
+    "prettier.bracketSameLine" : true,
     "prettier.documentSelectors": [
         "src/*.php",
         "examples/*.php"
-    ]
+    ]    
   }
