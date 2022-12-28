@@ -4,11 +4,22 @@ namespace Trebel\Schematic\Operators;
 
 use Trebel\Schematic\Operator;
 
+/**
+ * [Description Increase]
+ */
 class Increase extends Operator {
+    /**
+     * @param mixed ...$arg
+     */
     function __construct(...$arg) {
         parent::__construct(...$arg);
     }
 
+    /**
+     * @param mixed $type
+     * 
+     * @return void
+     */
     public function validateType($type): void {
         // Call parent function
         parent::validateType($type);

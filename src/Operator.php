@@ -15,7 +15,7 @@ abstract class Operator extends Property {
 
     // Call parent function
     public function validateType($item): void {
-        if (!isset($item->operators) || !in_array(get_class($this), $item->operators)) {
+        if (!isset($item::$operators) || !in_array(get_class($this), $item::$operators) ) {
             throw new  \Exception(
                 "[" . get_class($item) . "] doesn't have [" . get_class($this) . "] operator"
             );

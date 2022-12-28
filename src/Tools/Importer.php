@@ -2,10 +2,6 @@
 
 namespace Trebel\Schematic\Tools;
 
-use Exception;
-use Trebel\Schematic\Collection;
-use Trebel\Schematic\Schema;
-use Trebel\Schematic\Field;
 
 class Importer {
     private $map = [];
@@ -13,6 +9,7 @@ class Importer {
 
     function __construct($map = []) {
         $this->map = $map;
+        return $this;
     }
 
     private function getClassName($class) {
@@ -20,81 +17,93 @@ class Importer {
         return end($namespaces);
     }
 
+    private function isScalar($element) {
+        return !count($element->children());
+    }
+
+    private function getInnerItem($xml) {
+        foreach ($xml->children() as $item) {
+            return $item;
+        }
+        return null;
+    }
+
     private function parseSchema($class, $element) {
         $properties = [];
         foreach ($class::$schema as $schemaClass) {
-            $keyName = $this->getClassName($schemaClass);
-            if (isset($element[$keyName])) {
+            $key = $this->getClassName($schemaClass);
+            if (isset($element->{$key})) {
                 $properties[] = $this->convert(
                     $schemaClass,
-                    $element[$keyName],
-                    $element[$keyName]['@attributes'] ?? []
+                    $element->{$key}
                 );
             }
         }
         return new $class($properties);
     }
 
-    private function parseList($class, $element, $attributes = []) {
+    private function parseList($class, $element) {
+
         $list = [];
-        foreach ($class::$schema as $schemaClass) {
-            $keyName = $this->getClassName($schemaClass);
-            if (isset($element[$keyName])) {
-                $$list[] = $this->convert(
-                    $schemaClass,
-                    $element[$keyName],
-                    $element[$keyName]['@attributes'] ?? []
-                );
+        foreach ($element->children() as $el) { 
+            if ($this->getClassName($class::$type) === $el->getName()) {
+                $list[] = $this->convert($class::$type, $el);
+                continue;
+            } 
+
+            // Otherwise it should be operator
+            foreach ($class::$operators as $operator) {
+                if ($this->getClassName($operator) === $el->getName()) {
+                    $list[] = new $operator(
+                        $this->convert($class::$type, $this->getInnerItem($el))
+                    );
+                }
+                continue 2;
             }
+
+            throw new \Exception('Invalid list item: ['. $el->getName() .']');
         }
+
         return new $class($list);
     }
 
-    private function parseOperator($class, $element, $attributes = []) {
-    }
-
     private function parseField($class, $element) {
-        if (is_scalar($element)) {
-            return new $class($element);
+        if ($this->isScalar($element)) {
+            return new $class((string) $element);
         }
 
-        foreach ($element as $key => $el) {
-            if ($key !== '@attributes') {
-                return new $class(
-                    $this->convert($key, $el, $element['@attributes'] ?? [])
-                );
+        // Then it should be only operator
+        foreach ($element->children() as $el) {
+            foreach ($class::$operators ?? [] as $operator) {
+                if ($this->getClassName($operator) === $el->getName()) {
+                    return new $class(
+                        new $operator((string) $el)
+                    );
+                }
             }
         }
 
         throw new \Exception("Field $class is invalid");
     }
 
-    private function convert($class, $element, $attributes) {
+    private function convert($class, $element) {
         // When reference
+        $attributes = iterator_to_array($element->attributes());
         if (isset($attributes['src'])) {
-            list(, $el, $atr)  = $this->loadXml($this->rootPath . '/' . $attributes['src']);
-            return $this->convert($class, $el, $atr);
-        }
-        // When operator
-        if (isset($attributes['type']) && $attributes['type'] === 'operator') {
-            foreach ($$class::operators as $className) {
-                if ($class === $className) {
-                    $this->parseOperator($class, $element, $attributes);
-                }
-            }
-            throw new \Exception("Invalid operator for: $class");
+            $el = $this->loadXml($this->rootPath . '/' . ((string) $attributes['src']));
+            return $this->convert($class, $el);
         }
         if (is_a($class, 'Trebel\Schematic\Schema', true)) {
-            return $this->parseSchema($class, $element, $attributes);
+            return $this->parseSchema($class, $element);
         }
         if (is_a($class, 'Trebel\Schematic\Collection', true)) {
-            return $this->parseList($class, $element, $attributes);
+            return $this->parseList($class, $element);
         }
         if (is_a($class, 'Trebel\Schematic\Field', true)) {
-            return $this->parseField($class, $element, $attributes);
+            return $this->parseField($class, $element);
         }
 
-        throw new Exception("Unhandled type: $class");
+        throw new \Exception("Unhandled type: $class");
     }
 
     private function loadXml($path) {
@@ -103,10 +112,8 @@ class Importer {
             throw new \Exception("XML $path is invalid");
         }
 
-        foreach ($xml as $key => $value) {
-            if ($key !== '@attributes') {
-                return [$key, $value, $xml['@attributes'] ?? []];
-            }
+        foreach ($xml->children() as $el) {
+            return $el;
         }
 
         throw new \Exception("XML: $path missing schema");
@@ -114,11 +121,11 @@ class Importer {
 
     public function import($path) {
         $this->rootPath = dirname($path);
-        list($key, $element, $attributes)  = $this->loadXml($path);
+        $element  = $this->loadXml($path);
         // Find Schema Class
         foreach ($this->map as $class) {
-            if ($this->getClassName($class) === $key) {
-                return $this->convert($class, $element, $attributes);
+            if ($this->getClassName($class) === $element->getName()) {
+                return $this->convert($class, $element);
             }
         }
         // Otherwise throw  exception

@@ -5,14 +5,26 @@ namespace Trebel\Schematic\Tools;
 use Exception;
 use Trebel\Schematic\Property;
 
+/**
+ * [Description Exporter]
+ */
 class Exporter {
     private $schema = null;
     private $path = null;
 
+    /**
+     * @param mixed $schema
+     */
     function __construct($schema) {
         $this->schema = $schema;
+        return $this;
     }
 
+    /**
+     * @param array $attributes
+     * 
+     * @return [type]
+     */
     private function createXml($attributes = []) {
         $root = new \SimpleXMLElement(
             '<?xml version="1.0" encoding="UTF-8" ?><Content />'
@@ -23,6 +35,12 @@ class Exporter {
         return $root;
     }
 
+    /**
+     * @param mixed $xml
+     * @param mixed $path
+     * 
+     * @return [type]
+     */
     private function saveXmlToFile($xml, $path) {
         $filePath = $this->path . '/' . $path;
         $directory = dirname($filePath);
@@ -32,11 +50,22 @@ class Exporter {
         $xml->asXML($filePath);
     }
 
+    /**
+     * @param mixed $obj
+     * 
+     * @return [type]
+     */
     private function getClassName($obj) {
         $namespaces = explode('\\', get_class($obj));
         return end($namespaces);
     }
 
+    /**
+     * @param mixed $xml
+     * @param mixed $obj
+     * 
+     * @return [type]
+     */
     private  function insertItem($xml, $obj) {
         if (is_a($obj, 'Trebel\Schematic\Schema')) {
             return $this->addSchema($xml, $obj);
@@ -56,7 +85,17 @@ class Exporter {
         );
     }
 
+    /**
+     * @param mixed $root
+     * @param mixed $schema
+     * 
+     * @return [type]
+     */
     private function addSchema($root, $schema) {
+        if (!isset($schema->ID)) {
+            throw new Exception("Oops, Invalid schema for:" . get_class($schema));
+        }
+
         $name = $this->getClassName($schema);
         $path = $name . '/' . $schema->ID . '.xml';
 
@@ -73,6 +112,12 @@ class Exporter {
         $this->saveXmlToFile($link, $path);
     }
 
+    /**
+     * @param mixed $root
+     * @param mixed $list
+     * 
+     * @return [type]
+     */
     private function addList($root, $list) {
         $name = $this->getClassName($list);
         $xml = $root->addChild($name);
@@ -81,6 +126,12 @@ class Exporter {
         }
     }
 
+    /**
+     * @param mixed $root
+     * @param mixed $field
+     * 
+     * @return [type]
+     */
     private function addField($root, $field) {
         $name = $this->getClassName($field);
         $value = $field->innerItem();
@@ -93,19 +144,31 @@ class Exporter {
         }
     }
 
+    /**
+     * @param mixed $root
+     * @param mixed $operator
+     * 
+     * @return [type]
+     */
     private function addOperator($root, $operator) {
         $name = $this->getClassName($operator);
         $value = $operator->innerItem();
 
+        $child = null;
         if ($value instanceof Property) {
             $child = $root->addChild($name);
-            $child->addAttribute('type', 'operator');
             $this->insertItem($child, $value);
         } else {
-            $root->addChild($name, (string) $value);
+            $child = $root->addChild($name, (string) $value);
         }
     }
 
+    /**
+     * @param mixed $path
+     * @param array $attributes
+     * 
+     * @return [type]
+     */
     public function export($path, $attributes = []) {
         $this->path = $path;
         $xml = $this->createXml($attributes);

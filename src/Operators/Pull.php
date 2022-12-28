@@ -5,11 +5,22 @@ namespace Trebel\Schematic\Operators;
 use Trebel\Schematic\Operator;
 use Trebel\Schematic\Collection;
 
+/**
+ * [Description Pull]
+ */
 class Pull extends Operator {
+    /**
+     * @param mixed ...$arg
+     */
     function __construct(...$arg) {
         parent::__construct(...$arg);
     }
 
+    /**
+     * @param mixed $list
+     * 
+     * @return void
+     */
     public function validateType($list): void {
         // Call parent function
         parent::validateType($list);

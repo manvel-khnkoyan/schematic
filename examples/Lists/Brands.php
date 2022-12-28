@@ -6,7 +6,7 @@ use Trebel\Schematic\Collection;
 
 class Brands extends Collection {
     public $type = 'Examples\Fields\Car\Name';
-    public $operators = [
+    public static $operators = [
         'Trebel\Operators\Push'
     ];
 

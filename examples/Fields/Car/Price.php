@@ -6,7 +6,7 @@ use Trebel\Schematic\Field;
 
 class Price extends Field {
 
-    public $operators = [
+    static public $operators = [
         'Trebel\Schematic\Operators\Increase'
     ];
 

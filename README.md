@@ -182,19 +182,19 @@ Operators are special for mutation of any field
         <Release>
             <ID key="id">12301928</ID>
             <Price key="">
-                <Increase type="operator">1</Increase>
+                <@Increase>1</@Increase>
             </Price>
-            <Resources type="Operator">
-                <Pull>
+            <Resources>
+                <@Pull>
                     <Resource />
-                </Pull>
-                <Push>
+                </@Pull>
+                <@Push>
                     <Resource />
-                </Push>
+                </@Push>
             </Resources>
             <Images>
                 <Resource type="Resource">
-                    <FilePath mimetType="image/jpeg">/tmp/example.jpg</FilePath>
+                    <R:FilePath mimetType="image/jpeg">/tmp/example.jpg</FilePath>
                 </Resource>
             </Images>
         </Release>
@@ -205,17 +205,17 @@ Operators are special for mutation of any field
 ```xml
 <xml>
     <Entity action="Update">
-        <ReleaseSetting>
+        <Schema:ReleaseSetting>
             <ID>12301928</ID>
             <Territories type="operator">
-                <Pull>
+                <Operator:Pull>
                     <Country>US</Country>
                     <Country>MX</Country>
-                </Pull>
-                <Push>
+                </Operator:Pull>
+                <Operator:Push>
                     <Country>US</Country>
                     <Country>MX</Country>
-                </Push>
+                </Operator:Push>
             </Territories>
         </ReleaseSetting>
     </Entity>

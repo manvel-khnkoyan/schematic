@@ -19,20 +19,38 @@ $user = new Schemas\Person([
         ])
     ])
 ]);
-
 $exporterOne = new Exporter($user);
-$exporterOne->export('/tmp/schematic/user/15', ['action' => 'Create']);
+$exporterOne->export('/tmp/schematic/user/Create', ['action' => 'Create']);
 
 
 $car = new Schemas\Car([
     new Fields\Car\ID(31),
     new Fields\Car\Price(
-        new Operators\Increase(5000)    
+        new Operators\Increase(5000)
     )
 ]);
-
 $exporterTwo = new Exporter($car);
-$exporterTwo->export('/tmp/schematic/car/31', ['action' => 'Update']);
+$exporterTwo->export('/tmp/schematic/car/Update', ['action' => 'Update']);
 
+$exporterTree = (new Exporter(
+    new Schemas\Person([
+        new Fields\User\ID(15),
+        new Lists\Cars([
+            new Operators\Push(
+                new Schemas\Car([
+                    new Fields\Car\ID(33),
+                    new Fields\Car\Name('Ford'),
+                    new Fields\Car\Price(15000)
+                ])
+            ),
+            new Operators\Pull( new Schemas\Car([
+                new Fields\Car\ID(31)]
+            )),
+        ])
+    ])
+))->export(
+    '/tmp/schematic/User/Update', 
+    ['action' => 'Update']
+);
 
 echo "OK\n";

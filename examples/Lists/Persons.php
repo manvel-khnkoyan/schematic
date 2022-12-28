@@ -6,7 +6,7 @@ use Trebel\Schematic\Collection;
 
 class Persons extends Collection {
     public $type = 'Examples\Schemas\Person';
-    public $operators = [
+    public static $operators = [
         'Trebel\Schematic\Operators\Push',
         'Trebel\Schematic\Operators\Pull',
     ];

@@ -6,6 +6,9 @@ use Trebel\Schematic\Property;
 use Trebel\Schematic\Field;
 use Trebel\Schematic\Collection;
 
+/**
+ * [Description Schema]
+ */
 abstract class Schema extends Property implements \Iterator {
 
     public static $schema = [];

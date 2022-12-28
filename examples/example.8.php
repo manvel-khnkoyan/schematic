@@ -10,7 +10,7 @@ $importer = new Tools\Importer([
     'Examples\Schemas\Toyota',
 ]);
 
-$result = $importer->import('/tmp/schematic/car/31/Car/31.xml');
-print_r($result);
+$result = $importer->import('/tmp/schematic/car/Update/index.xml');
+var_dump($result);
 
 echo "OK\n";

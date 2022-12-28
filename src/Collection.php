@@ -5,13 +5,19 @@ namespace Trebel\Schematic;
 use Trebel\Schematic\Property;
 use Trebel\Schematic\Operator;
 
+/**
+ * [Description Collection]
+ */
 abstract class Collection extends Property implements \Iterator {
     public $type = null;
-    public $operators = [];
+    static public $operators = [];
 
     protected $list = [];
     protected $position = 0;
 
+    /**
+     * @param mixed $list
+     */
     public function __construct($list) {
         $this->position = 0;
         if (!is_array($list)) {

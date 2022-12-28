@@ -7,7 +7,11 @@ class Property {
     /*
      * This function created special for validating
      * parent reference: Each schema property must have
-     * validateType function to validate dependenciess */
+     * validateType function to validate dependenciess 
+     *
+     * @param mixed $type
+     * @return void
+     */
     public function validateType($type): void {
         /* 
          * Otherwise check exact type */
