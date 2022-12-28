@@ -21,10 +21,9 @@ abstract class Collection extends Property implements \Iterator {
         foreach ($list as $key => $item) {
             // validate item
             if (!($item instanceof Property)) {
+                $itype = gettype($item);
                 throw new \Exception(
-                    "Lists [$key] item has invalid item: [" .
-                        gettype($item) .
-                        "]"
+                    "Lists [$key] item has invalid item: [$itype]"
                 );
             }
 

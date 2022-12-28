@@ -61,7 +61,7 @@ class Person extends Schema {
         parent::__construct(...$args);
     }
 
-    protected $__schema = [
+    public static $schema = [
         'Example\UserId',
         'Example\UserName',
     ];

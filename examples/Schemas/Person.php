@@ -9,7 +9,7 @@ class Person extends Schema {
         parent::__construct(...$args);
     }
 
-    public $__schema = [
+    public static $schema = [
         'Examples\Fields\User\ID',
         'Examples\Fields\User\Name',
         'Examples\Lists\Cars',

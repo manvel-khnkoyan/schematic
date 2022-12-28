@@ -8,11 +8,11 @@ use Trebel\Schematic\Collection;
 
 abstract class Schema extends Property implements \Iterator {
 
-    public $__schema = [];
+    public static $schema = [];
     protected $__properties = [];
 
     public function isCompleted() {
-        return count($this->__schema) === count($this->__properties);
+        return count($this::$schema) === count($this->__properties);
     }
 
     function __construct($properites) {
@@ -26,7 +26,7 @@ abstract class Schema extends Property implements \Iterator {
             $key = end($namespaces);
 
             // check if property was defined
-            if (!in_array($type, $this->__schema)) {
+            if (!in_array($type, $this::$schema)) {
                 throw new \Exception(
                     "Schema " . get_class($this) . " [$type] is not defined"
                 );

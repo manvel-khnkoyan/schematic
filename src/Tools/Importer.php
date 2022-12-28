@@ -4,7 +4,6 @@ namespace Trebel\Schematic\Tools;
 
 use Exception;
 use Trebel\Schematic\Collection;
-use Trebel\Schematic\Operator;
 use Trebel\Schematic\Schema;
 use Trebel\Schematic\Field;
 
@@ -21,9 +20,9 @@ class Importer {
         return end($namespaces);
     }
 
-    private function parseSchema($class, $element, $attributes = []) {
+    private function parseSchema($class, $element) {
         $properties = [];
-        foreach ($class::$__schema as $schemaClass) {
+        foreach ($class::$schema as $schemaClass) {
             $keyName = $this->getClassName($schemaClass);
             if (isset($element[$keyName])) {
                 $properties[] = $this->convert(
@@ -37,48 +36,61 @@ class Importer {
     }
 
     private function parseList($class, $element, $attributes = []) {
-        $properties = [];
-        foreach ($class::$__schema as $schemaClass) {
+        $list = [];
+        foreach ($class::$schema as $schemaClass) {
             $keyName = $this->getClassName($schemaClass);
             if (isset($element[$keyName])) {
-                $properties[] = $this->convert(
+                $$list[] = $this->convert(
                     $schemaClass,
                     $element[$keyName],
                     $element[$keyName]['@attributes'] ?? []
                 );
             }
         }
-        return new $class($properties);
+        return new $class($list);
     }
 
     private function parseOperator($class, $element, $attributes = []) {
-
     }
 
-    private function parseField($class, $element, $attributes = []) {
+    private function parseField($class, $element) {
+        if (is_scalar($element)) {
+            return new $class($element);
+        }
 
+        foreach ($element as $key => $el) {
+            if ($key !== '@attributes') {
+                return new $class(
+                    $this->convert($key, $el, $element['@attributes'] ?? [])
+                );
+            }
+        }
+
+        throw new \Exception("Field $class is invalid");
     }
 
     private function convert($class, $element, $attributes) {
-        if (!($class instanceof Schema)) {
-            throw new \Exception("$class should be Schema");
-        }
-
+        // When reference
         if (isset($attributes['src'])) {
             list(, $el, $atr)  = $this->loadXml($this->rootPath . '/' . $attributes['src']);
             return $this->convert($class, $el, $atr);
         }
-
-        if ($class instanceof Schema) {
+        // When operator
+        if (isset($attributes['type']) && $attributes['type'] === 'operator') {
+            foreach ($$class::operators as $className) {
+                if ($class === $className) {
+                    $this->parseOperator($class, $element, $attributes);
+                }
+            }
+            throw new \Exception("Invalid operator for: $class");
+        }
+        if (is_a($class, 'Trebel\Schematic\Schema', true)) {
             return $this->parseSchema($class, $element, $attributes);
         }
-        if ($class instanceof Operator) {
+        if (is_a($class, 'Trebel\Schematic\Collection', true)) {
             return $this->parseList($class, $element, $attributes);
         }
-        if ($class instanceof Collection) {
-            return $this->parseOperator($class, $element, $attributes);
-        }
-        if ($class instanceof Field) {
+        if (is_a($class, 'Trebel\Schematic\Field', true)) {
             return $this->parseField($class, $element, $attributes);
         }
 
@@ -102,20 +114,14 @@ class Importer {
 
     public function import($path) {
         $this->rootPath = dirname($path);
-        list($keyName, $element, $attributes)  = $this->loadXml($path);
-
+        list($key, $element, $attributes)  = $this->loadXml($path);
         // Find Schema Class
-        $class = null;
-        foreach ($this->map as $className) {
-            if ($this->getClassName($class) === $keyName) {
-                $class = $className;
+        foreach ($this->map as $class) {
+            if ($this->getClassName($class) === $key) {
+                return $this->convert($class, $element, $attributes);
             }
         }
-
-        if (!$class) {
-            throw new \Exception("Schema [keyName] not found in Map");
-        }
-
-        return $this->convert($class, $element, $attributes);
+        // Otherwise throw  exception
+        throw new \Exception("Schema not found in $path");        
     }
 }
