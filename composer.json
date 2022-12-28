@@ -1,5 +1,13 @@
 {
     "name": "trebel/schematic",
+    "description": "Schematic: Schema exchange protocol",
+    "require": {
+        "php": ">=7.4"
+    },
+    "keywords": ["schema", "data", "validator"],
+    "homepage": "https://github.com/manvel-khnkoyan/schematic",
+    "type": "library",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Trebel\\Schematic\\": "src/"
@@ -15,6 +23,5 @@
             "name": "Manvel Khnkoyan",
             "email": "manvel@trebel.io"
         }
-    ],
-    "require": {}
+    ]
 }
