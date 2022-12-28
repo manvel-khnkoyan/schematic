@@ -75,7 +75,7 @@ class Importer {
      * 
      * @return [type]
      */
-    private function parseList($class, $element) {ß
+    private function parseList($class, $element) {
         $list = [];
         foreach ($element->children() as $el) {
             if ($this->getClassName($class::$type) === $el->getName()) {
