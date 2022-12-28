@@ -210,17 +210,17 @@ File: /tmp/example/index.xml
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Content>
-	<Person>
-		<ID>15</ID>
-		<Cars>
-			<Push>
-				<Car src="Car/33.xml"/>
-			</Push>
-			<Pull>
-				<Car src="Car/31.xml"/>
-			</Pull>
-		</Cars>
-	</Person>
+  <Person>
+    <ID>15</ID>
+    <Cars>
+      <Push>
+        <Car src="Car/33.xml"/>
+      </Push>
+      <Pull>
+        <Car src="Car/31.xml"/>
+      </Pull>
+    </Cars>
+  </Person>
 </Content>
 ```
 
@@ -229,11 +229,11 @@ File: /tmp/example/Car/33.xml
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Content>
-	<Car>
-		<ID>33</ID>
-		<Name>Ford</Name>
-		<Price>15000</Price>
-	</Car>
+  <Car>
+    <ID>33</ID>
+    <Name>Ford</Name>
+    <Price>15000</Price>
+  </Car>
 </Content>
 ```
 
@@ -255,12 +255,12 @@ output:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Content>
-	<Car>
-		<ID>31</ID>
-		<Price>
-            <Increase>500</Increase>
-        </Price>
-	</Car>
+  <Car>
+    <ID>31</ID>
+    <Price>
+      <Increase>500</Increase>
+    </Price>
+  </Car>
 </Content>
 ```
 
