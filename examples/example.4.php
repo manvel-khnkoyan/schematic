@@ -33,7 +33,6 @@ $Persons = new Lists\Persons([
     new Operators\Pull($userTree),
 ]);
 
-
 try {
     $Persons = new Lists\Persons([
         new Operators\Push($userTree)

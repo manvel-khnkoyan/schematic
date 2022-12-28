@@ -5,7 +5,7 @@ namespace Trebel\Schematic\Operators;
 use Trebel\Schematic\Operator;
 
 /**
- * [Description Increase]
+ * Increase operator,
  */
 class Increase extends Operator {
     /**

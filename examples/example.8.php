@@ -11,6 +11,6 @@ $importer = new Tools\Importer([
 ]);
 
 $result = $importer->import('/tmp/schematic/car/Update/index.xml');
-var_dump($result);
+// var_dump($result);
 
 echo "OK\n";

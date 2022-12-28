@@ -1,43 +1,37 @@
 ## Schematic Protocol
 
-Purpose of this library is to create schema transfer protocol with XML export and import abilities.
+The purpose of this library is to create a schema transfer protocol with the ability to export and import XML.
 
-### Schema
+### How does it work
 
-Trebel\Schematic\Schema
+The library helps us create new data types with strict validation and a defined structure.
 
-A schema is a dictionary-like object that has properties, each property can currently be of the following 4 types:
 
-**Field**,
-**List**,
-**Operator**,
-**Schema**,
+### Data types:
 
-`And each objects are immutable`
+In current version, there are 4 data types: **Field**, **List**, **Operator**, **Schema**.
+Every created object is immutable, once created, you cannot change it.
 
-### Field
+### Data type: Trebel\Schematic\Field
 
-Trebel\Schematic\Field
-
-Fields are the smallest point of the Schemes. Lets degine UserId and UserName fields:
-
+Fields are the smallest points of data types, the value of any "Field" must be primitive or we can see below can be Operator: 
 
 ```php
-namespace Example;
+namespace Example\Fields\User;
 
 use Trebel\Schematic\Field;
 
-class UserId extends Field {
+class ID extends Field {
     function __construct($value) {
         parent::__construct($value);
     }
 
     public function validate($value): bool {
-        return (is_int($value) || ctype_digit($value)) && $value > 0;
+        return ctype_digit($value) && $value > 0;
     }
 }
 
-class UserName extends Field {
+class Name extends Field {
     function __construct($value) {
         parent::__construct($value);
     }
@@ -48,8 +42,10 @@ class UserName extends Field {
 }
 ```
 
-After we have created two types of fields, we can define the first schema with thses two fields:
 
+### Data type: Trebel\Schematic\Schema
+
+Schema data type is object-like type, each schema can contain Field, List, or other Schema data types.
 
 ```php
 namespace Example;
@@ -62,8 +58,8 @@ class Person extends Schema {
     }
 
     public static $schema = [
-        'Example\UserId',
-        'Example\UserName',
+        'Example\Fields\User\ID',
+        'Example\Fields\User\Name',
     ];
 }
 ```
@@ -71,25 +67,22 @@ class Person extends Schema {
 Then we can create our first Schema object:
 
 ```php
-
-$personOne = new Example\Person([
+$person = new Example\Person([
     new Example\UserId(1234),
     new Example\UserName('Jhone'),
 ])
 
-
-echo $personOne->id . "\n"; // Ourput: "1234"
-// Or to get absoulte value
-echo $personOne->id->innerItem() . "\n"; // Ourput: 1234
+echo $person->id . "\n"; // Ourput: "1234"
+echo $person->id->innerItem() . "\n"; // Ourput: 1234 // absolute value
 ```
 
-### List
+> `ID` is required field for each Schema data type
 
-Trebel\Schematic\Collection
+### Data type: Trebel\Schematic\Collection (List)
 
 __Collection__ Why not List? beacouse of list is reserved word in PHP
 
-Lists are schema lists like schema, but only difference is Schema can handle diffenerent types, but Lists can handle only one type:
+Lists are data types similar to arrays, and the only difference between a Schema and a List is that List can only handle one type, while Schema can handle any.
 
 ```php
 namespace Example;
@@ -97,8 +90,7 @@ namespace Example;
 use Trebel\Schematic\Collection;
 
 class Persons extends Collection {
-    // Discribing Lists item type
-    protected $type = 'Example\Person';
+    protected static $type = 'Example\Person'; // Required
 
     function __construct(...$arg) {
         parent::__construct(...$arg);
@@ -108,127 +100,189 @@ class Persons extends Collection {
 // To use Lists
 
 $persons = new Examples\Persons([
-    $personOne,
-    $personTwo,
+    new Persons( ... ),
+    new Persons( ... )
 ])
 
 ```
 
-### Operators
+### Data type: Trebel\Schematic\Operator
 
-Operators are special for mutation of any field
+Operators are special types, not to define an element, but to modify it.
 
-## XML Serializer
+For example, suppose we have a schema **Car** with fields **ID** and **Price**, and in the case where we want to change the price to add or subtract existing price, 
+we can create **Increase** operator inside **Price**
 
-
-```xml
-<xml>
-    <package action="create">
-        <person>
-            <id>20927</id>
-            <name>Jhone</name>
-            <cars>
-                <car>
-                    <id>24</id>
-                    <name>Toyota</name>
-                </car>
-            </cars>
-        </person>
-    </package>
-</xml>
+```php
+$carTwo = new Schemas\Car([
+    new Fields\Car\ID(31),
+    new Fields\Car\Price(
+        new Operators\Increase(123),
+    )
+]);
 ```
 
+In this version, the operators only work on the Field and List data types.
+There are defined operators
 
+ **Push** (Trebel\Schematic\Operators\Push),   
+ **Pull** (Trebel\Schematic\Operators\Pull)   
+ for **List** data type
 
-```xml
-<xml>
-    <package action="update">
-        <person>
-            <id>20927</id>
-            <cars>
-                <push type="operator">
-                    <car>
-                        <id>25</id>
-                        <name>BMW</name>
-                    </car>
-                </push>
-            </cars>
-        </person>
-    </package>
-</xml>
+ **Increase** (Trebel\Schematic\Operators\Increase)   
+ for **Field** data type
+
+But you can create your own data types as well.
+
+To support any operator on a Field or List, you need to define all the operators within the types.
+
+```php
+class Cars extends Collection {
+    public static $type = 'Examples\Schemas\Car';
+    public static $operators = [
+        'Trebel\Schematic\Operators\Push',
+        'Trebel\Schematic\Operators\Pull',
+    ];
+
+    function __construct(...$arg) {
+        parent::__construct(...$arg);
+    }
+}
 ```
 
-
-
-```xml
-<xml>
-    <package action="update">
-        <person>
-            <id>20927</id>
-            <carNames>
-                <CarName />
-                <CarName />
-                <CarName />
-            </cars>
-        </person>
-    </package>
-</xml>
+```php
+// Example
+new Lists\Cars([
+    new Operators\Push(
+        new Schemas\Car([
+            new Fields\Car\ID(33),
+            new Fields\Car\Name('Ford'),
+            new Fields\Car\Price(15000)
+        ])
+    ),
+    // Pay attention that Pull operator can be not completed schema
+    new Operators\Pull( new Schemas\Car([
+        new Fields\Car\ID(31)]
+    )),
+])
 ```
 
+### Export / Import
 
-```xml
-<xml>
-    <Content version="1.0" action="Update">
-        <Release>
-            <ID key="id">12301928</ID>
-            <Price key="">
-                <@Increase>1</@Increase>
-            </Price>
-            <Resources>
-                <@Pull>
-                    <Resource />
-                </@Pull>
-                <@Push>
-                    <Resource />
-                </@Push>
-            </Resources>
-            <Images>
-                <Resource type="Resource">
-                    <R:FilePath mimetType="image/jpeg">/tmp/example.jpg</FilePath>
-                </Resource>
-            </Images>
-        </Release>
-    </Content>
-</xml>
+The main part of the library is the ability to export and import XML schemas using a specific protocol.
+
+#### Export Schema 
+
+```php
+$exporter = new Trebel\Schematic\Tools\Exporter($schema);
+$exporter->export($pathToExport);
 ```
 
-```xml
-<xml>
-    <Entity action="Update">
-        <Schema:ReleaseSetting>
-            <ID>12301928</ID>
-            <Territories type="operator">
-                <Operator:Pull>
-                    <Country>US</Country>
-                    <Country>MX</Country>
-                </Operator:Pull>
-                <Operator:Push>
-                    <Country>US</Country>
-                    <Country>MX</Country>
-                </Operator:Push>
-            </Territories>
-        </ReleaseSetting>
-    </Entity>
-</xml>
+You can only import a schema, not a field, list, or operator.
+
+Let's look at a specific example:
+
+```php
+$person = new Schemas\Person([
+    new Fields\User\ID(15),
+    new Lists\Cars([
+        new Operators\Push(
+            new Schemas\Car([
+                new Fields\Car\ID(33),
+                new Fields\Car\Name('Ford'),
+                new Fields\Car\Price(15000)
+            ])
+        ),
+        new Operators\Pull( new Schemas\Car([
+            new Fields\Car\ID(31)]
+        )),
+    ])
+])
+
+$exporter = new Trebel\Schematic\Tools\Exporter($person);
+$exporter->export('/tmp/example/index.xml');
 ```
 
+Outpout xml files could be:
+
+File: /tmp/example/index.xml
+
 ```xml
-<xml>
-    <Entity version="1.0">
-        <Track action="Delete">
-            <ID>12301928</ID>
-        <Track>
-    </Entity>
-</xml>
+<?xml version="1.0" encoding="UTF-8"?>
+<Content>
+	<Person>
+		<ID>15</ID>
+		<Cars>
+			<Push>
+				<Car src="Car/33.xml"/>
+			</Push>
+			<Pull>
+				<Car src="Car/31.xml"/>
+			</Pull>
+		</Cars>
+	</Person>
+</Content>
 ```
 
+File: /tmp/example/Car/33.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Content>
+	<Car>
+		<ID>33</ID>
+		<Name>Ford</Name>
+		<Price>15000</Price>
+	</Car>
+</Content>
+```
+
+and the same for Car/31.xml
+
+Another example:
+
+```php
+$car = new Schemas\Car([
+    new Fields\Car\ID(31),
+    new Fields\Car\Price(
+        new Operators\Increase(500),
+    )
+]);
+```
+
+output:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Content>
+	<Car>
+		<ID>31</ID>
+		<Price>
+            <Increase>500</Increase>
+        </Price>
+	</Car>
+</Content>
+```
+
+#### Import Schema 
+
+```php
+$importer = new Trebel\Schematic\Tools\Importer([ .. list of supported schmeas]);
+$schema = $importer->import($pathToSchema);
+```
+
+Concrete example:
+
+```php
+$importer = new Tools\Importer([
+    'Examples\Schemas\Car',
+    'Examples\Schemas\Person',
+    'Examples\Schemas\Toyota',
+]);
+
+$car = $importer->import('/tmp/car/index.xml');
+```
+
+#### Conclusion
+
+For more information, check out the tutorials located in the ```examples``` folder

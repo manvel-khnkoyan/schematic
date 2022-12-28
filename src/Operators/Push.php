@@ -6,7 +6,8 @@ use Trebel\Schematic\Operator;
 use Trebel\Schematic\Collection;
 
 /**
- * [Description Push]
+ * List pull operator
+ * Special to add items to list
  */
 class Push extends Operator {
     /**
@@ -33,15 +34,15 @@ class Push extends Operator {
         }
 
         // Check if List Type is the same as Operator item
-        if ($list->type !== get_class($this->value)) {
+        if ($list::$type !== get_class($this->value)) {
             throw new \Exception(
-                "Push operator value should be the same type as [" . $list->type . "]"
+                "Push operator value should be the same type as [" . $list::$type . "]"
             );
         }
 
         // Pull operator must be completed object
         if (!$this->value->isCompleted()) {
-            throw new \Exception("Push operator should be completed item, for [" . $list->type . "]");
+            throw new \Exception("Push operator should be completed item, for [" . $list::$type . "]");
         }
     }
 }

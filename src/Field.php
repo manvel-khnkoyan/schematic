@@ -8,11 +8,13 @@ use Trebel\Schematic\Operator;
 /*
  * It coukld be eather primitiv eather
  * non primitiv values */
-
 abstract class Field extends Property {
     protected $value = null;
     abstract protected function validate($value): bool;
 
+    /**
+     * @param mixed $value
+     */
     function __construct($value) {
         $this->value = $value;
         if ($this->value instanceof Operator) {
@@ -27,6 +29,9 @@ abstract class Field extends Property {
         }
     }
 
+    /**
+     * @return [type]
+     */
     public function __toString() {
         if (is_scalar($this->value)) {
             return $this->value;
@@ -35,7 +40,9 @@ abstract class Field extends Property {
     }
 
     /*
-     * Get Field Inner Item */
+     * Get Field Inner Item
+     * @return [type]
+     */
     public function innerItem() {
         return $this->value;
     }

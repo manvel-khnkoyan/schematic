@@ -3,24 +3,45 @@
 namespace Trebel\Schematic\Tools;
 
 
+/**
+ * Importer
+ */
 class Importer {
     private $map = [];
     private $rootPath = "";
 
+    /**
+     * @param array $map
+     */
     function __construct($map = []) {
         $this->map = $map;
         return $this;
     }
 
+    /**
+     * @param mixed $class
+     * 
+     * @return [type]
+     */
     private function getClassName($class) {
         $namespaces = explode('\\', $class);
         return end($namespaces);
     }
 
+    /**
+     * @param mixed $element
+     * 
+     * @return [type]
+     */
     private function isScalar($element) {
         return !count($element->children());
     }
 
+    /**
+     * @param mixed $xml
+     * 
+     * @return [type]
+     */
     private function getInnerItem($xml) {
         foreach ($xml->children() as $item) {
             return $item;
@@ -28,6 +49,12 @@ class Importer {
         return null;
     }
 
+    /**
+     * @param mixed $class
+     * @param mixed $element
+     * 
+     * @return [type]
+     */
     private function parseSchema($class, $element) {
         $properties = [];
         foreach ($class::$schema as $schemaClass) {
@@ -42,14 +69,19 @@ class Importer {
         return new $class($properties);
     }
 
-    private function parseList($class, $element) {
-
+    /**
+     * @param mixed $class
+     * @param mixed $element
+     * 
+     * @return [type]
+     */
+    private function parseList($class, $element) {ß
         $list = [];
-        foreach ($element->children() as $el) { 
+        foreach ($element->children() as $el) {
             if ($this->getClassName($class::$type) === $el->getName()) {
                 $list[] = $this->convert($class::$type, $el);
                 continue;
-            } 
+            }
 
             // Otherwise it should be operator
             foreach ($class::$operators as $operator) {
@@ -57,16 +89,22 @@ class Importer {
                     $list[] = new $operator(
                         $this->convert($class::$type, $this->getInnerItem($el))
                     );
+                    continue 2;
                 }
-                continue 2;
             }
 
-            throw new \Exception('Invalid list item: ['. $el->getName() .']');
+            throw new \Exception('Invalid list item: [' . $el->getName() . ']');
         }
 
         return new $class($list);
     }
 
+    /**
+     * @param mixed $class
+     * @param mixed $element
+     * 
+     * @return [type]
+     */
     private function parseField($class, $element) {
         if ($this->isScalar($element)) {
             return new $class((string) $element);
@@ -86,6 +124,12 @@ class Importer {
         throw new \Exception("Field $class is invalid");
     }
 
+    /**
+     * @param mixed $class
+     * @param mixed $element
+     * 
+     * @return [type]
+     */
     private function convert($class, $element) {
         // When reference
         $attributes = iterator_to_array($element->attributes());
@@ -106,6 +150,11 @@ class Importer {
         throw new \Exception("Unhandled type: $class");
     }
 
+    /**
+     * @param mixed $path
+     * 
+     * @return [type]
+     */
     private function loadXml($path) {
         $xml = simplexml_load_file($path);
         if (!($xml instanceof \SimpleXMLElement)) {
@@ -119,6 +168,11 @@ class Importer {
         throw new \Exception("XML: $path missing schema");
     }
 
+    /**
+     * @param mixed $path
+     * 
+     * @return [type]
+     */
     public function import($path) {
         $this->rootPath = dirname($path);
         $element  = $this->loadXml($path);
@@ -129,6 +183,6 @@ class Importer {
             }
         }
         // Otherwise throw  exception
-        throw new \Exception("Schema not found in $path");        
+        throw new \Exception("Schema not found in $path");
     }
 }

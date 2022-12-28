@@ -6,7 +6,8 @@ use Trebel\Schematic\Operator;
 use Trebel\Schematic\Collection;
 
 /**
- * [Description Pull]
+ * List pull operator
+ * Special to delete items from list
  */
 class Pull extends Operator {
     /**
@@ -33,9 +34,9 @@ class Pull extends Operator {
         }
 
         // Check if List Type is the same as Operator item
-        if ($list->type !== get_class($this->value)) {
+        if ($list::$type !== get_class($this->value)) {
             throw new \Exception(
-                "Pull operator value should be the same type for [" . $list->type . "]"
+                "Pull operator value should be the same type for [" . $list::$type . "]"
             );
         }
     }

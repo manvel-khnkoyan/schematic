@@ -48,9 +48,6 @@ $exporterTree = (new Exporter(
             )),
         ])
     ])
-))->export(
-    '/tmp/schematic/User/Update', 
-    ['action' => 'Update']
-);
+))->export('/tmp/schematic/User/Update');
 
 echo "OK\n";

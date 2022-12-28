@@ -4,7 +4,13 @@ namespace Examples\Schemas;
 
 use Trebel\Schematic\Schema;
 
+/**
+ * [Description Car]
+ */
 class Car extends Schema {
+    /**
+     * @param mixed ...$args
+     */
     function __construct(...$args) {
         parent::__construct(...$args);
     }

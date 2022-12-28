@@ -4,16 +4,24 @@ namespace Trebel\Schematic;
 
 use Trebel\Schematic\Property;
 
+/**
+ * [Description Operator]
+ */
 abstract class Operator extends Property {
     protected $value = null;
 
-    /*
-     * Constructor */
+    /**
+     * @param mixed $value
+     */
     function __construct($value) {
         $this->value = $value;
     }
 
-    // Call parent function
+    /**
+     * @param mixed $item
+     * 
+     * @return void
+     */
     public function validateType($item): void {
         if (!isset($item::$operators) || !in_array(get_class($this), $item::$operators) ) {
             throw new  \Exception(
@@ -23,7 +31,9 @@ abstract class Operator extends Property {
     }
 
     /*
-    * Get Operator Inner Item */
+     * Get Operator Inner Item 
+     * @return [type]
+     */
     public function innerItem() {
         return $this->value;
     }

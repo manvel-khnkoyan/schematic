@@ -6,7 +6,7 @@ use Exception;
 use Trebel\Schematic\Property;
 
 /**
- * [Description Exporter]
+ * Exporter
  */
 class Exporter {
     private $schema = null;
@@ -169,9 +169,9 @@ class Exporter {
      * 
      * @return [type]
      */
-    public function export($path, $attributes = []) {
-        $this->path = $path;
-        $xml = $this->createXml($attributes);
+    public function export($path) {
+        $this->path = dirname($path);
+        $xml = $this->createXml();
 
         $this->addSchema($xml, $this->schema);
         $this->saveXmlToFile($xml, '/index.xml');

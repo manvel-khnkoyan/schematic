@@ -2,6 +2,9 @@
 
 namespace Trebel\Schematic;
 
+/**
+ * [Description Property]
+ */
 class Property {
 
     /*
